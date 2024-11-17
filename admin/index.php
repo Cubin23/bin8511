@@ -5,25 +5,32 @@ include "header.php";
 if (isset($_GET['act'])) {
     $act = $_GET['act'];
     switch ($act) {
-        // Thêm danh mục
+            // Thêm danh mục
         case 'adddm':
-            if (isset($_POST['themmoi']) && ($_POST['themmoi'])) {
-                $name = $_POST['name'];
-                $sql = "INSERT INTO categories(name) VALUES ('$name')";
+            if (isset($_POST['themmoi']) && $_POST['themmoi']) {
+                $maloai = $_POST['maloai'];
+                $tensp = $_POST['tensp'];
+                $price = $_POST['price'];
+                $description = $_POST['description']; // Lấy thông tin mô tả
+
+                // Câu lệnh SQL để thêm danh mục mới vào cơ sở dữ liệu
+                $sql = "INSERT INTO categories (maloai, name, price, description) VALUES ('$maloai', '$tensp', '$price', '$description')";
                 pdo_execute($sql);
-                $thongbao = "Thêm danh mục thành công!";
+
+                $thongbao = "Thêm thành công";
             }
             include "danhmuc/add.php";
             break;
 
-        // Hiển thị danh sách danh mục
+
+            // Hiển thị danh sách danh mục
         case 'listdm':
             $sql = "SELECT * FROM categories";
             $categories = pdo_query($sql);
             include "danhmuc/list.php";
             break;
 
-        // Sửa danh mục
+            // Sửa danh mục
         case 'editdm':
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id = $_GET['id'];
@@ -40,18 +47,20 @@ if (isset($_GET['act'])) {
             include "danhmuc/edit.php";
             break;
 
-        // Xóa danh mục
+            // Xóa danh mục
         case 'deletedm':
-            if (isset($_GET['id']) && $_GET['id'] > 0) {
+            if (isset($_GET['id'])) {
                 $id = $_GET['id'];
-                $sql = "DELETE FROM categories WHERE id=$id";
+
+                // Xóa danh mục khỏi cơ sở dữ liệu
+                $sql = "DELETE FROM categories WHERE id = $id";
                 pdo_execute($sql);
-                $thongbao = "Xóa danh mục thành công!";
+
+                $thongbao = "Xóa thành công";
+                header("Location: index.php?act=adddm");  // Chuyển hướng về danh sách danh mục
             }
-            $sql = "SELECT * FROM categories";
-            $categories = pdo_query($sql);
-            include "danhmuc/list.php";
             break;
+
 
         default:
             include "home.php";
@@ -62,4 +71,3 @@ if (isset($_GET['act'])) {
 }
 
 include "footer.php";
-?>
