@@ -112,6 +112,7 @@ button.register-btn:hover {
     background-color: #45a049;
 }
 
+
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .header {

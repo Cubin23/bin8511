@@ -14,21 +14,19 @@ function pdo_get_connection(){
 * @param array $args mảng giá trị cung cấp các than số của $sql
 * @throws PDOException lỗi thực thi câu lệnh
 */
-function pdo_execute($sql){
-    $sql_agrs = array_slice(func_get_args(),1);
-    try{
-        $conn = pdo_get_connection();
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($sql_agrs);
+function pdo_execute($sql, $params = []) {
+    try {
+        $conn = pdo_get_connection(); // Kết nối PDO
+        $stmt = $conn->prepare($sql); // Chuẩn bị câu lệnh
+        $stmt->execute($params); // Thực thi câu lệnh
+        return $stmt->rowCount(); // Trả về số dòng bị ảnh hưởng
+    } catch (PDOException $e) {
+        throw $e; // Ném lỗi
+    } finally {
+        unset($conn); // Giải phóng kết nối
     }
-    catch(PDOException $e){
-        throw $e;
-    }
-    finally{
-        unset($conn);
-    }
-
 }
+
 /** 
  * thực thi câu lệnh sql thao tác dữ liêu(INSERT, UPDATE, DELETE)
 * @param string $sql câu lệnh sql
@@ -98,6 +96,7 @@ function pdo_query_value($sql){
         unset($conn);
     }
 }
+
 
 
 ?>
