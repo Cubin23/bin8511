@@ -77,21 +77,21 @@
               <table>
                 <tr>
                   <th></th>
-                  <th>Mã sản phẩm</th>
-                  <th>Tên sản phẩm</th>
+                  <th>Mã Danh Mục</th>
+                  <th>Tên Danh Mục</th>
                   <th>Mô tả</th>
                   <th></th>
                 </tr>
                 <?php 
-                foreach($listcategory as $danhmuc){
+                foreach($listdanhmuc as $danhmuc){
                     extract($danhmuc);
-                    $suadm="index.php?act=suadm&category_id=".$category_id;
-                    $xoadm="index.php?act=xoadm&category_id=".$category_id;
+                    $suadm="index.php?act=suadm&danh_muc_id=".$danh_muc_id;
+                    $xoadm="index.php?act=xoadm&danh_muc_id=".$danh_muc_id;
                     echo '<tr>
                   <td><input type="checkbox" name="" id=""></td>
-                  <td>'.$category_id.'</td>
-                  <td>'.$name.'</td>
-                  <td>'.$description.'</td>
+                  <td>'.$danh_muc_id.'</td>
+                  <td>'.$ten_danh_muc.'</td>
+                  <td>'.$mo_ta.'</td>
                   <td> <a href="'.$suadm.'"><input type="button" value="Sửa"></a><a href="'.$xoadm.'"><input type="button" value="Xóa"></a></td>
                 </tr>';
                 }

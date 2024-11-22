@@ -27,14 +27,14 @@ if(is_array($dm)){
             <h2>Cập nhật danh mục</h2>
             <form action="index.php?act=updatedm" method="post">
             <div class="form-group">
-                    <label>Mã loại</label>
-                    <input type="text" id="maloai" name="maloai" value='<?=$category_id?>'>
+                    <label>Mã Danh Mục</label>
+                    <input type="text" id="maloai" name="maloai" value='<?=$danh_muc_id?>'>
                 </div>
                 <div>
                 <form method="post" action="index.php?act=updatedm">
-                <input type="hidden" name="category_id" value="<?= htmlspecialchars($dm['category_id']) ?>">
-                 <input type="text" name="tensp" value="<?= htmlspecialchars($dm['name']) ?>" required>
-                <textarea style=" width: 300px;height: 200px" name="mota" required><?= htmlspecialchars($dm['description']) ?></textarea>
+                <input type="hidden" name="danh_muc_id" value="<?= htmlspecialchars($dm['danh_muc_id']) ?>">
+                 <input type="text" name="tensp" value="<?= htmlspecialchars($dm['ten_danh_muc']) ?>" required>
+                <textarea style=" width: 300px;height: 200px" name="mota" required><?= htmlspecialchars($dm['mo_ta']) ?></textarea>
                 <button type="submit" class="register-btn" name="capnhat">Cập nhật</button>
                  <a href="index.php?act=listdm" class="register-btn">Danh sách</a>
 </form>

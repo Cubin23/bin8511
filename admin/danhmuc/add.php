@@ -18,16 +18,16 @@ input.register-btn:hover {
             <h2>Thêm Danh Mục</h2>
             <form action="index.php?act=adddm" method="post">
             <div class="form-group">
-                    <label>Mã loại</label>
-                    <input type="text" id="maloai" name="maloai">
+                    <label>Mã Danh Mục</label>
+                    <input type="text" id="danh_muc_id" name="danh_muc_id">
                 </div>
                 <div class="form-group">
-                    <label>Tên sản phẩm</label>
-                    <input type="text" name="tensp" >
+                    <label>Tên Danh Mục</label>
+                    <input type="text" name="ten_danh_muc" >
                 </div>
                 <div class="form-group">
                     <label>Mô tả</label>
-                    <input type="" name="mota" >
+                    <input type="" name="mo_ta" >
                 </div>
                 <div>
                 <button type="submit" class="register-btn" name="them" value="them">Thêm</button>
