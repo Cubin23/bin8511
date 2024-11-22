@@ -1,10 +1,6 @@
 <div class="container">
     <form action="index.php?act=adddm" method="POST" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="maloai">Mã loại</label>
-        <input type="text" id="maloai" name="maloai" required>
-    </div>
-    <div class="form-group">
         <label for="tensp">Tên sản phẩm</label>
         <input type="text" id="tensp" name="tensp" required>
     </div>
@@ -21,7 +17,7 @@
         <input type="file" id="image" name="image" accept="image/*">
     </div>
     <button type="submit" class="register-btn" name="themmoi">Thêm</button>
-    <button href="index.php?act=listdm" type="submit" class="register-btn">Danh sách</button>
+    <a href="index.php?act=listdm" class="register-btn">Danh sách</a>
 </form>
 
     <?php 
