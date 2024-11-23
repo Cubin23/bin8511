@@ -1,4 +1,9 @@
 <?php 
+session_start();
+
+include "model/danhmuc.php";
+include "model/sanpham.php";
+
 include "model/taikhoan.php";
 include "model/pdo.php";
 include "view/header.php";
@@ -46,9 +51,34 @@ if((isset($_GET['act']))&& ($_GET['act']!="")){
                 break;
             
             
-        case 'dangnhap' :
-            include "view/taikhoan/dangnhap.php";
-            break;
+                case 'dangnhap':
+                    if (isset($_POST['dangnhap']) && ($_POST['dangnhap'])) {
+                        $username = $_POST['username'];
+                        $password = $_POST['password'];
+                
+                        // Gọi hàm kiểm tra người dùng
+                        $checkuser = checkuser($username, $password);
+                
+                        if (is_array($checkuser)) {
+                            // Lưu tên người dùng vào session sau khi đăng nhập thành công
+                           // Giả sử bảng có 'user_id'
+                            $_SESSION['username'] = $checkuser['username'];  // Lưu tên người dùng
+                            header('Location: index.php');  // Chuyển hướng về trang chủ
+                        } else {
+                            // Nếu không tìm thấy người dùng
+                            $thongbao = "Tài khoản không tồn tại! Vui lòng đăng ký tài khoản.";
+                        }
+                    }
+                    include "view/taikhoan/dangnhap.php";
+                    break;
+                    case 'logout':
+                        session_start();
+                        session_unset();  // Xóa tất cả các session
+                        session_destroy();  // Hủy phiên làm việc
+                        header('Location: index.php');  // Chuyển hướng về trang chủ
+                        break;
+                    
+                
         default:
             include "view/home.php";
     }

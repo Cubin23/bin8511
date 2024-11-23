@@ -19,7 +19,10 @@ function insert_nguoi_dung_khach_hang($username, $password, $email, $sdt,$ho_ten
     return pdo_execute($sql, $params); 
 }
 
-
-
+function checkuser($username,$password){
+    $sql = "select * from nguoi_dung_khach_hang where username='".$username."' AND password='".$password."'";
+    $sp= pdo_query_one($sql);
+    return $sp;
+}
 
 ?>
