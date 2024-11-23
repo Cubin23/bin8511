@@ -33,4 +33,8 @@
         </tbody>
     </table>
 </div>
+<?php else: ?>
+<div class="row fretitle">
+    <h3>Không có bình luận nào.</h3>
+</div>
 <?php endif; ?>

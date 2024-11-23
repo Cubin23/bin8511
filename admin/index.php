@@ -86,21 +86,24 @@ if (isset($_GET['act'])) {
                 header("Location: index.php?act=listdm");  // Chuyển hướng về danh sách danh mục
             }
             break;
-            case 'dsbl': // Hiển thị danh sách bình luận
-                include "../model/binhluan.php";
-                $san_pham_id = isset($_GET['san_pham_id']) ? $_GET['san_pham_id'] : 0;
-                $listbinhluan = loadall_binhluan($san_pham_id);
-                include "binhluan/list.php";
-                break;
+            
+case 'dsbl': // Hiển thị danh sách bình luận
+    include "../model/binhluan.php";
+    $san_pham_id = isset($_GET['san_pham_id']) ? $_GET['san_pham_id'] : 0;
+    $listbinhluan = loadall_binhluan($san_pham_id); // Lấy danh sách bình luận từ cơ sở dữ liệu
+    include "binhluan/list.php";
+    break;
 
-                case 'xoabl': // Xóa bình luận
-                    include "../model/binhluan.php";
-                    if (isset($_GET['binh_luan_id'])) {
-                        $binh_luan_id = $_GET['binh_luan_id'];
-                        delete_binhluan($binh_luan_id);
-                    }
-                    header("Location: index.php?act=dsbl");
-                    break;
+case 'xoabl': // Xóa bình luận
+    include "../model/binhluan.php";
+    if (isset($_GET['binh_luan_id'])) {
+        $binh_luan_id = $_GET['binh_luan_id'];
+        delete_binhluan($binh_luan_id); // Xóa bình luận từ cơ sở dữ liệu
+    }
+    header("Location: index.php?act=dsbl");
+    break;
+
+
 
         default:
             include "home.php"; // Trang mặc định
