@@ -154,6 +154,21 @@ if(isset($_GET['act'])){
                                 $listcategory = loadall_products();
                                 include "sanpham/list.php";
                                 break;
+            case 'dsbl': // Hiển thị danh sách bình luận
+                  include "../model/binhluan.php";
+                        $san_pham_id = isset($_GET['san_pham_id']) ? $_GET['san_pham_id'] : 0;
+                        $listbinhluan = loadall_binh_luan($san_pham_id);
+                     include "binhluan/list.php";
+                                    break;
+                    
+                                    case 'xoabl': // Xóa bình luận
+                                        include "../model/binhluan.php";
+                                        if (isset($_GET['binh_luan_id'])) {
+                                            $binh_luan_id = $_GET['binh_luan_id'];
+                                            delete_binh_luan($binh_luan_id);
+                                        }
+                                        header("Location: index.php?act=dsbl");
+                                        break;
         
 
         default:

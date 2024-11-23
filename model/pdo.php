@@ -8,6 +8,7 @@ function pdo_get_connection() {
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $conn;
     } catch (PDOException $e) {
+        error_log("Lỗi kết nối: " . $e->getMessage()); // Ghi lại lỗi kết nối vào log
         echo "Lỗi kết nối: " . $e->getMessage();
         die(); // Dừng nếu không thể kết nối
     }
@@ -25,15 +26,17 @@ function pdo_execute($sql, $params = []) {
         $conn = pdo_get_connection(); // Kết nối PDO
         $stmt = $conn->prepare($sql); // Chuẩn bị câu lệnh
         $stmt->execute($params); // Thực thi câu lệnh
-        echo "Thực thi thành công!<br>"; // Debug thông báo thực thi thành công
         return $stmt->rowCount(); // Trả về số dòng bị ảnh hưởng
     } catch (PDOException $e) {
-        echo "Lỗi PDO: " . $e->getMessage();
-        return false;
+        error_log("Lỗi PDO: " . $e->getMessage()); // Ghi lại lỗi vào log
+        echo "Lỗi PDO: " . $e->getMessage(); // Hiển thị thông báo lỗi nếu cần
+        return false; // Trả về false nếu có lỗi
     } finally {
         unset($conn); // Giải phóng kết nối
     }
 }
+
+
 
 
 
