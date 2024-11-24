@@ -4,6 +4,7 @@ try {
     include "../model/danhmuc.php";
     include "../model/sanpham.php";
     include "../model/binhluan.php";
+    include "../model/khachhang.php";
     include "header.php";
 } catch (Exception $e) {
     error_log($e->getMessage());
@@ -197,21 +198,22 @@ if (isset($_GET['act'])) {
                 }
                 break;
             
-            case 'deletekh': // Xóa khách hàng
-                if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0) {
-                    $id = intval($_GET['id']);
-                    try {
-                        delete_customer($id);
-                        header("Location: index.php?act=dskh&message=success");
-                        exit;
-                    } catch (Exception $e) {
-                        error_log("Lỗi khi xóa khách hàng với ID $id: " . $e->getMessage());
-                        echo "Có lỗi xảy ra khi xóa khách hàng!";
+                case 'deletekh': // Xóa khách hàng
+                    if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0) {
+                        $id = intval($_GET['id']);
+                        try {
+                            delete_customer($id);
+                            header("Location: index.php?act=dskh&message=success");
+                            exit;
+                        } catch (Exception $e) {
+                            error_log("Lỗi khi xóa khách hàng với ID $id: " . $e->getMessage());
+                            echo "Có lỗi xảy ra khi xóa khách hàng!";
+                        }
+                    } else {
+                        echo "ID khách hàng không hợp lệ!";
                     }
-                } else {
-                    echo "ID khách hàng không hợp lệ!";
-                }
-                break;
+                    break;
+                
             
 
 
