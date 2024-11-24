@@ -1,52 +1,49 @@
 <?php
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $product = pdo_query_one("SELECT * FROM products WHERE id = ?", $id);
+if (isset($_GET['id']) && ($_GET['id'] > 0)) {
+    $san_pham_id = $_GET['id'];
+    $sql = "SELECT * FROM san_pham WHERE san_pham_id = ?";
+    $sp = pdo_query_one($sql, $san_pham_id);
 }
 
-if (isset($_POST['update_product']) && $_POST['update_product']) {
-    $id = $_POST['id'];
+if (isset($_POST['capnhat']) && ($_POST['capnhat'])) {
+    $san_pham_id = $_POST['san_pham_id'];
     $name = $_POST['name'];
     $price = $_POST['price'];
     $description = $_POST['description'];
-    $image = $product['image'];
+    $image = $_FILES['image']['name'];
+    $target_dir = "../uploads/";
+    $target_file = $target_dir . basename($_FILES["image"]["name"]);
 
-    if ($_FILES['image']['name']) {
-        $image = $_FILES['image']['name'];
-        $target_dir = "../uploads/";
-        $target_file = $target_dir . basename($_FILES["image"]["name"]);
-        move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+        $sql = "UPDATE san_pham SET ten_san_pham = ?, gia = ?, mo_ta = ?, anh_url = ? WHERE san_pham_id = ?";
+        pdo_execute($sql, $name, $price, $description, $image, $san_pham_id);
+        $thongbao = "Cập nhật sản phẩm thành công!";
+        header("Location: index.php?act=listsp");
+        exit();
+    } else {
+        $thongbao = "Không thể tải ảnh lên!";
     }
-
-    $sql = "UPDATE products SET name = ?, price = ?, description = ?, image = ? WHERE id = ?";
-    pdo_execute($sql, $name, $price, $description, $image, $id);
-
-    $message = "Cập nhật sản phẩm thành công!";
 }
 ?>
 
-<h2>Cập nhật sản phẩm</h2>
-<form action="index.php?act=editsp&id=<?= $product['id'] ?>" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="id" value="<?= $product['id'] ?>">
-
-    <label for="name">Tên sản phẩm:</label><br>
-    <input type="text" name="name" value="<?= $product['name'] ?>" required><br>
-
-    <label for="price">Giá sản phẩm:</label><br>
-    <input type="number" name="price" value="<?= $product['price'] ?>" required><br>
-
-    <label for="description">Mô tả:</label><br>
-    <textarea name="description" rows="5"><?= $product['description'] ?></textarea><br>
-
-    <label for="image">Hình ảnh:</label><br>
-    <input type="file" name="image"><br><br>
-    <img src="../uploads/<?= $product['image'] ?>" width="100"><br>
-
-    <input type="submit" name="update_product" value="Cập nhật">
+<form action="index.php?act=editsp&id=<?= $san_pham_id ?>" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="san_pham_id" value="<?= $sp['san_pham_id'] ?>">
+    <div>
+        <label for="name">Tên sản phẩm:</label>
+        <input type="text" name="name" value="<?= $sp['ten_san_pham'] ?>" required>
+    </div>
+    <div>
+        <label for="price">Giá sản phẩm:</label>
+        <input type="text" name="price" value="<?= $sp['gia'] ?>" required>
+    </div>
+    <div>
+        <label for="description">Mô tả:</label>
+        <textarea name="description" required><?= $sp['mo_ta'] ?></textarea>
+    </div>
+    <div>
+        <label for="image">Hình ảnh:</label>
+        <input type="file" name="image">
+        <img src="../uploads/<?= $sp['anh_url'] ?>" width="100">
+    </div>
+    <input type="submit" name="capnhat" value="Cập nhật sản phẩm">
 </form>
-
-<?php
-if (isset($message)) {
-    echo "<p>$message</p>";
-}
-?>

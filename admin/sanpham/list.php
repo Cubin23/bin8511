@@ -2,96 +2,80 @@
     table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 18px;
-    text-align: left;
+    margin: 20px auto;
+    font-family: 'Roboto', sans-serif;
 }
 
-table th, table td {
+table th,
+table td {
     padding: 12px 15px;
+    text-align: left;
     border: 1px solid #ddd;
 }
 
 table th {
     background-color: #f4f4f4;
     font-weight: bold;
-    color: #333;
 }
 
 table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-table tr:nth-child(odd) {
-    background-color: #fff;
+table tr:hover {
+    background-color: #f1f1f1;
 }
 
 table img {
     width: 100px;
     height: auto;
-    border-radius: 5px;
+    object-fit: cover;
 }
 
-table td a {
-    text-decoration: none;
+table a {
     color: #007bff;
-    font-weight: bold;
+    text-decoration: none;
 }
 
-table td a:hover {
-    color: #0056b3;
+table a:hover {
     text-decoration: underline;
 }
 
-.action-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.action-buttons a {
-    padding: 8px 12px;
-    background-color: #28a745;
-    color: white;
-    border-radius: 4px;
-    text-decoration: none;
-}
-
-.action-buttons a:hover {
-    opacity: 0.9;
-}
-
-.action-buttons .delete {
-    background-color: #dc3545;
-}
-
-.action-buttons .delete:hover {
-    opacity: 0.9;
+h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
 }
 
 </style>
 <?php
-$products = pdo_query("SELECT * FROM products");
+$sql = "SELECT * FROM san_pham";
+$list_san_pham = pdo_query($sql);
 ?>
 
 <h2>Danh sách sản phẩm</h2>
-<table border="1">
+
+<table border="1" cellspacing="0">
     <tr>
         <th>ID</th>
         <th>Tên sản phẩm</th>
         <th>Giá</th>
-        <th>Hình ảnh</th>
+        <th>Mô tả</th>
+        <th>Ảnh</th>
         <th>Hành động</th>
     </tr>
-    <?php foreach ($products as $product) : ?>
-    <tr>
-        <td><?= $product['id'] ?></td>
-        <td><?= $product['name'] ?></td>
-        <td><?= $product['price'] ?></td>
-        <td><img src="../uploads/<?= $product['image'] ?>" width="100"></td>
-        <td>
-            <a href="index.php?act=editsp&id=<?= $product['id'] ?>">Sửa</a> |
-            <a href="index.php?act=deletesp&id=<?= $product['id'] ?>">Xóa</a>
-        </td>
-    </tr>
+    <?php foreach ($list_san_pham as $sp) : ?>
+        <tr>
+            <td><?= $sp['san_pham_id'] ?></td>
+            <td><?= $sp['ten_san_pham'] ?></td>
+            <td><?= $sp['gia'] ?></td>
+            <td><?= $sp['mo_ta'] ?></td>
+            <td><img src="../uploads/<?= $sp['anh_url'] ?>" width="100"></td>
+            <td>
+                <a href="index.php?act=editsp&id=<?= $sp['san_pham_id'] ?>">Sửa</a> | 
+                <a href="index.php?act=deletesp&id=<?= $sp['san_pham_id'] ?>">Xóa</a>
+            </td>
+        </tr>
     <?php endforeach; ?>
 </table>
