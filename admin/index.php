@@ -170,6 +170,31 @@ if (isset($_GET['act'])) {
             header("Location: index.php?act=dsbl");
             exit;
             break;
+            case 'dskh':
+                include "khachhang/list.php";
+                break;
+            
+        case 'addkh':
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                insert_customer($_POST['ho_ten'], $_POST['email'], $_POST['dia_chi'], $_POST['sdt'], $_POST['username'], $_POST['password'], $_POST['loai_nguoi_dung']);
+            }
+            include "khachhang/add.php";
+            break;
+        case 'editkh':
+            if (isset($_GET['id'])) {
+                $customer = get_customer_by_id($_GET['id']);
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    update_customer($_POST['id'], $_POST['ho_ten'], $_POST['email'], $_POST['dia_chi'], $_POST['sdt'], $_POST['username'], $_POST['password'], $_POST['loai_nguoi_dung']);
+                }
+                include "khachhang/edit.php";
+            }
+            break;
+        case 'deletekh':
+            if (isset($_GET['id'])) {
+                delete_customer($_GET['id']);
+            }
+            header("Location: index.php?act=listkh");
+            break;
 
 
 
