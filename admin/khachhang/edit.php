@@ -1,34 +1,55 @@
 <?php
-if (isset($customer)) {
+require_once "../model/khachhang.php";
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $customer = load_customer_by_id($id);
+
+    if (!$customer) {
+        echo "Không tìm thấy khách hàng.";
+        exit;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id = $_POST['id'];
+    $ho_ten = $_POST['ho_ten'];
+    $email = $_POST['email'];
+    $dia_chi = $_POST['dia_chi'];
+    $sdt = $_POST['sdt'];
+    $loai_nguoi_dung = $_POST['loai_nguoi_dung'];
+
+    update_customer($id, $ho_ten, $email, $dia_chi, $sdt, $loai_nguoi_dung);
+    header("Location: index.php?act=dskh");
+    exit;
+}
 ?>
-<h2>Sửa thông tin khách hàng</h2>
-<form action="index.php?act=editkh" method="POST">
-    <input type="hidden" name="id" value="<?= $customer['nguoi_dung_id'] ?>">
-    
-    <label for="ho_ten">Họ tên:</label>
-    <input type="text" name="ho_ten" value="<?= $customer['ho_ten'] ?>" required><br>
-    
-    <label for="email">Email:</label>
-    <input type="email" name="email" value="<?= $customer['email'] ?>" required><br>
-    
-    <label for="dia_chi">Địa chỉ:</label>
-    <input type="text" name="dia_chi" value="<?= $customer['dia_chi'] ?>"><br>
-    
-    <label for="sdt">SĐT:</label>
-    <input type="text" name="sdt" value="<?= $customer['sdt'] ?>"><br>
-    
-    <label for="username">Username:</label>
-    <input type="text" name="username" value="<?= $customer['username'] ?>" required><br>
-    
-    <label for="password">Password:</label>
-    <input type="password" name="password" placeholder="Nhập mật khẩu mới nếu muốn đổi"><br>
-    
-    <label for="loai_nguoi_dung">Loại người dùng:</label>
-    <select name="loai_nguoi_dung">
-        <option value="0" <?= $customer['loai_nguoi_dung'] == 0 ? 'selected' : '' ?>>Khách hàng</option>
-        <option value="1" <?= $customer['loai_nguoi_dung'] == 1 ? 'selected' : '' ?>>Admin</option>
-    </select><br>
-    
-    <button type="submit" name="edit">Cập nhật</button>
-</form>
-<?php } ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa khách hàng</title>
+</head>
+<body>
+    <h2>Sửa thông tin khách hàng</h2>
+    <form method="POST">
+        <input type="hidden" name="id" value="<?= $customer['nguoi_dung_id'] ?>">
+        <label>Họ tên:</label><br>
+        <input type="text" name="ho_ten" value="<?= $customer['ho_ten'] ?>" required><br>
+        <label>Email:</label><br>
+        <input type="email" name="email" value="<?= $customer['email'] ?>" required><br>
+        <label>Địa chỉ:</label><br>
+        <input type="text" name="dia_chi" value="<?= $customer['dia_chi'] ?>"><br>
+        <label>Số điện thoại:</label><br>
+        <input type="text" name="sdt" value="<?= $customer['sdt'] ?>"><br>
+        <label>Loại người dùng:</label><br>
+        <select name="loai_nguoi_dung">
+            <option value="0" <?= $customer['loai_nguoi_dung'] == 0 ? 'selected' : '' ?>>Khách hàng</option>
+            <option value="1" <?= $customer['loai_nguoi_dung'] == 1 ? 'selected' : '' ?>>Admin</option>
+        </select><br>
+        <button type="submit">Cập nhật</button>
+    </form>
+</body>
+</html>
