@@ -7,19 +7,19 @@
             <!-- Full-width images with number and caption text -->
             <div class="mySlides fade">
            
-            <img src="view/image/banner-bancaydep.jpg" style="width:1000px">
+            <img src="view/image/banner-bancaydep.jpg" style="width:100%">
             <div class="text"></div>
             </div>
 
             <div class="mySlides fade">
            
-            <img src="view/image/baner2.jpg" style="width:1000px">
+            <img src="view/image/baner2.jpg" style="width:100%">
      
             </div>
 
             <div class="mySlides fade">
             
-            <img src="view/image/Baner3.jpg" style="width:1000px">
+            <img src="view/image/Baner3.jpg" style="width:100%">
            
             </div>
 
@@ -54,7 +54,43 @@
     Danh mục tổng hợp các loại cây cảnh mới nhất của Tiny Garden
 </div>
 <div class="products">
-    <div class="product">
+<?php 
+$i = 0;
+foreach ($spnew as $sp) {
+    extract($sp);
+
+    // Kiểm tra nếu đường dẫn ảnh không hợp lệ
+    if (empty($anh_url)) {
+        echo "Ảnh không tồn tại cho sản phẩm: $ten_san_pham<br>";
+        continue;
+    }
+
+    // Tạo đường dẫn URL tuyệt đối
+    $anh_url = "/DA1/upload/" . $anh_url;
+
+    // Kiểm tra file tồn tại
+    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $anh_url)) {
+        echo "File ảnh không tồn tại: " . $anh_url . "<br>";
+        continue;
+    }
+
+    // Xác định class "mr"
+    $mr = (($i == 1) || ($i == 3) || ($i == 7)) ? "mr" : "";
+
+    // Hiển thị HTML
+    echo '<div class="' . $mr . '">
+        <img alt="Cây cảnh văn phòng" height="200" src="' . $anh_url . '" width="300"/>
+        <p>' . $ten_san_pham . '</p>
+        <p>$' . $gia . '  || <a href=""><i class="fas fa-shopping-cart"></a></i></p> 
+    </div>';
+
+    $i += 1;
+}
+?>
+
+
+
+    <!-- <div class="product">
         <img alt="Cây cảnh văn phòng" height="200" src="view/image/93_2.jpg" width="300"/>
      <p>
       Đồ vật trang trí
@@ -110,7 +146,7 @@
      </p>
      <p>20.000 VNĐ || <a href=""><i class="fas fa-shopping-cart"></a></i></p>
     </div>
-    
+     -->
 </div>
 <div class="line">
     <h1>

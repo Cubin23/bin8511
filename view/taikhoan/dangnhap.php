@@ -109,7 +109,7 @@ body {
         <button type="submit" class="login-btn" name="dangnhap" value="dangnhap">Đăng nhập</button>
     </form>
     <div class="extra-links">
-        <a href="index.php?act=quenmatkhau">Quên mật khẩu?</a>
+        <a href="index.php?act=quenmk">Quên mật khẩu?</a>
         <span> | </span>
         <a href="index.php?act=dangky">Đăng ký tài khoản</a>
     </div>

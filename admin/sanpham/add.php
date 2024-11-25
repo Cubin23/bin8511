@@ -112,27 +112,34 @@ textarea {
 </style>
 <div class="container">
             <h2>Thêm Sản Phẩm</h2>
-            <form action="index.php?act=addsp" method="post">
-            <div class="form-group">
-                    <label>Mã sản phẩm</label>
-                    <input type="text" id="maloai" name="masp">
-                </div>
+            <form action="index.php?act=addsp" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>Tên sản phẩm</label>
-                    <input type="text" name="tensp" >
+                    <input type="text" name="ten_san_pham" >
                 </div>
                 <div class="form-group">
                     <label>Giá sản phẩm</label>
-                    <input type="text" name="price" >
+                    <input type="text" name="gia" >
                 </div>
                 <div class="form-group">
                     <label>Hình ảnh</label>
-                    <input type="file" name="hinh" >
+                    <input type="file" name="anh_url" >
+                </div>
+                <div class="form-group">
+                    <label>Danh Mục</label>
+                    <select name="danh_muc_id">
+                        <?php 
+                        foreach($listcategory as $danhmuc){
+                            extract($danhmuc);
+                            echo '<option value="' . $danh_muc_id . '">' . $ten_danh_muc . '</option>';
+                        }
+                        ?>
+                    </select>
                 </div>
 
                 <div class="form-group">
                     <label>Mô tả</label>
-                    <textarea style="width: 340px; height: 200px" type="text" name="mota" > </textarea>
+                    <textarea style="width: 340px; height: 200px" type="text" name="mo_ta" > </textarea>
                 </div>
                 <div>
                 <button type="submit" class="register-btn" name="them" value="them">Thêm</button>

@@ -25,16 +25,20 @@ function pdo_execute($sql, $params = []) {
     try {
         $conn = pdo_get_connection(); // Kết nối PDO
         $stmt = $conn->prepare($sql); // Chuẩn bị câu lệnh
+        if (!is_array($params)) {
+            throw new InvalidArgumentException("Tham số truyền vào phải là một mảng."); 
+        }
         $stmt->execute($params); // Thực thi câu lệnh
         return $stmt->rowCount(); // Trả về số dòng bị ảnh hưởng
     } catch (PDOException $e) {
-        error_log("Lỗi PDO: " . $e->getMessage()); // Ghi lại lỗi vào log
-        echo "Lỗi PDO: " . $e->getMessage(); // Hiển thị thông báo lỗi nếu cần
+        error_log("Lỗi PDO: " . $e->getMessage()); // Ghi lại lỗi
+        echo "Lỗi PDO: " . $e->getMessage(); // Hiển thị thông báo lỗi
         return false; // Trả về false nếu có lỗi
     } finally {
         unset($conn); // Giải phóng kết nối
     }
 }
+
 
 
 

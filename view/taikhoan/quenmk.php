@@ -106,33 +106,45 @@ body {
     margin: 0;
     padding: 0;
 }
+input[type="submit"] {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+input[type="submit"]:active {
+    background-color: #1f618d;
+    transform: translateY(0);
+    box-shadow: none;
+}
+
 
 </style>
 
 <div class="container">
-    <h2>Đăng ký tài khoản</h2>
-    <form action="index.php?act=dangky" method="POST">
-    <div class="form-group">
-            <label for="ho_ten">Họ và Tên</label>
-            <input type="text" id="ho_ten" name="ho_ten" placeholder="Nhập họ và tên" required>
-        </div>
-        <div class="form-group">
-            <label for="username">Tên đăng nhập:</label>
-            <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Mật khẩu:</label>
-            <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
-        </div>
+    <h2>Quên mật khẩu</h2>
+    <form action="index.php?act=quenmk" method="POST">
+
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Nhập email" required>
+            <input type="email" id="email" name="email" placeholder="Nhập email của bạn" required>
         </div>
-        <div class="form-group">
-            <label for="phone">Số điện thoại:</label>
-            <input type="tel" id="sdt" name="sdt" placeholder="Nhập số điện thoại" required>
-        </div>
-        <button type="submit" class="register-btn" name="dangky" value="dangky">Đăng ký</button>
+       <input type="submit" name="quenmk" value="Gửi">
     </form>
 
     <!-- Thông báo -->
@@ -142,10 +154,4 @@ body {
     }
     ?>
 
-    <!-- Liên kết tiện ích -->
-    <div class="extra-links">
-        <a href="index.php?act=dangnhap">Đã có tài khoản? Đăng nhập</a>
-        <span>|</span>
-        <a href="index.php?act=quenmk">Quên mật khẩu</a>
-    </div>
 </div>

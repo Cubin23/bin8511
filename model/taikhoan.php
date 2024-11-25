@@ -25,4 +25,10 @@ function checkuser($username,$password){
     return $sp;
 }
 
+function checksdt($email){
+    $sql = "select * from nguoi_dung_khach_hang where email='".$email."'";
+    $sp= pdo_query_one($sql);
+    return $sp;
+}
+
 ?>

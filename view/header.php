@@ -26,18 +26,25 @@ $isLoggedIn = isset($_SESSION['username']);
     <div class="logo">
       <img src="view/image/z5997923336813_0615e09e211f5c43c27c0838175e2e29.jpg" alt="Tiny Garden Logo" width="150">
     </div>
-    <div class="cart">
-      <a href="#"><i class="fas fa-shopping-cart"></i> Thành tiền: 0 VND</a>
-      <?php if ($isLoggedIn): ?>
-        <!-- Hiển thị tên tài khoản và nút đăng xuất nếu đã đăng nhập -->
+    <?php
+$isLoggedIn = isset($_SESSION['username']);
+$isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+?>
+
+<div class="cart">
+    <?php if ($isLoggedIn): ?>
+        <span>Xin chào, <?= htmlspecialchars($_SESSION['username']); ?>!</span>
+        <?php if ($isAdmin): ?>
+            <!-- Hiển thị liên kết quản trị -->
+            <a href="admin.php"><i class="fas fa-cogs"></i> Quản trị</a>
+        <?php endif; ?>
         <a href="index.php?act=logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
-        <span>Xin chào, <?= htmlspecialchars($_SESSION['username']); ?>!</span> <!-- Hiển thị tên tài khoản -->
-      <?php else: ?>
-        <!-- Hiển thị các liên kết Đăng ký và Đăng nhập nếu chưa đăng nhập -->
+    <?php else: ?>
         <a href="index.php?act=dangky"><i class="fas fa-user"></i> Đăng ký</a>
         <a href="index.php?act=dangnhap"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
-      <?php endif; ?>
-    </div>
+    <?php endif; ?>
+</div>
+
   </div>
 
   <!-- Navigation Menu -->

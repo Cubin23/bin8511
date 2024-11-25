@@ -90,10 +90,6 @@
 <div class="container">
             <h2>Thêm Danh Mục</h2>
             <form action="index.php?act=adddm" method="post">
-            <div class="form-group">
-                    <label>Mã Danh Mục</label>
-                    <input type="text" id="danh_muc_id" name="danh_muc_id">
-                </div>
                 <div class="form-group">
                     <label>Tên Danh Mục</label>
                     <input type="text" name="ten_danh_muc" >

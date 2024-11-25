@@ -3,10 +3,12 @@ session_start();
 
 include "model/danhmuc.php";
 include "model/sanpham.php";
-
+include "global.php";
 include "model/taikhoan.php";
 include "model/pdo.php";
 include "view/header.php";
+
+$spnew = loadall_san_pham_home();
 if((isset($_GET['act']))&& ($_GET['act']!="")){
     $act=$_GET['act'];
     switch ($act){
@@ -76,6 +78,19 @@ if((isset($_GET['act']))&& ($_GET['act']!="")){
                         session_unset();  // Xóa tất cả các session
                         session_destroy();  // Hủy phiên làm việc
                         header('Location: index.php');  // Chuyển hướng về trang chủ
+                        break;
+                    case 'quenmk':
+                        if(isset($_POST['quenmk'])&&($_POST['quenmk'])){
+                            $email = $_POST['email'];
+                            $checkemail=checksdt($email);
+                            if(is_array($checkemail)){
+                                $thongbao = "Mật khẩu của bạn là : ".$checkemail['password'];
+                            }else{
+                                $thongbao = "Email của bạn không tồn tại";
+                            }
+                        }
+                        include "view/taikhoan/quenmk.php";
+
                         break;
                     
                 

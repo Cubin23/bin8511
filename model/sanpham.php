@@ -1,42 +1,68 @@
 <?php 
-function insert_products($tensp, $description, $price, $category_id) {
-    $sql = "INSERT INTO products (name, description, price, category_id) 
-            VALUES (:tensp, :description, :price, :category_id)";
-    pdo_execute($sql, [
-        ':tensp' => $tensp,
-        ':description' => $description,
-        ':price' => $price,
-        ':category_id' => $category_id,
+function insert_san_pham($ten_san_pham, $gia, $danh_muc_id, $mo_ta, $anh_url) {
+    $sql = "INSERT INTO san_pham (ten_san_pham, gia, danh_muc_id, mo_ta, anh_url) 
+            VALUES (:ten_san_pham, :gia, :danh_muc_id, :mo_ta, :anh_url)";
+    $conn = pdo_get_connection();
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([
+        ':ten_san_pham' => $ten_san_pham,
+        ':gia' => $gia,
+        ':danh_muc_id' => $danh_muc_id,
+        ':mo_ta' => $mo_ta,
+        ':anh_url' => $anh_url
     ]);
 }
 
+function loadall_san_pham() {
+    $sql = "SELECT * FROM san_pham ORDER BY san_pham_id"; // Sử dụng cột đúng
+    return pdo_query($sql); // Gọi hàm pdo_query để lấy danh mục
+}
+function loadall_san_pham_home() {
+    $sql = "SELECT * FROM san_pham WHERE 1 ORDER BY san_pham_id DESC LIMIT 0,6"; // Sửa cú pháp ORDER BY
+    return pdo_query($sql); // Gọi hàm pdo_query để lấy danh mục
+}
 
-function delete_products($product_id){
-    $sql ="delete from sanpham where id=".$product_id;
+
+function delete_san_pham($san_pham_id){
+    $sql = "delete from san_pham where san_pham_id=".$san_pham_id; 
     pdo_execute($sql);
 }
+function update_san_pham($san_pham_id, $ten_san_pham, $gia, $mo_ta, $danh_muc_id, $anh_url) {
+    global $pdo;
+    $sql = "UPDATE san_pham SET 
+            ten_san_pham = :ten_san_pham, 
+            gia = :gia, 
+            mo_ta = :mo_ta, 
+            danh_muc_id = :danh_muc_id, 
+            anh_url = :anh_url 
+            WHERE san_pham_id = :san_pham_id";
 
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':ten_san_pham', $ten_san_pham);
+    $stmt->bindParam(':gia', $gia);
+    $stmt->bindParam(':mo_ta', $mo_ta);
+    $stmt->bindParam(':danh_muc_id', $danh_muc_id);
+    $stmt->bindParam(':anh_url', $anh_url);
+    $stmt->bindParam(':san_pham_id', $san_pham_id);
 
-function loadall_products(){
-    $sql = "select * from products order by name";
-    $listproduct = pdo_query($sql);
-    return $listproduct;
+    return $stmt->execute();
+}
+function loadone_san_pham($san_pham_id) {
+    // Đảm bảo rằng câu truy vấn của bạn đúng và kết nối cơ sở dữ liệu đã được thiết lập
+    $sql = "SELECT * FROM san_pham WHERE san_pham_id = :san_pham_id";
+    $conn = pdo_get_connection();
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':san_pham_id', $san_pham_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $sanpham = $stmt->fetch(PDO::FETCH_ASSOC);  // Trả về dữ liệu của sản phẩm
+    return $sanpham;
 }
 
-function loadone_products($product_id){
-    $sql = "select * from products where product_id=".$product_id;
-    $dm=pdo_query_one($sql);
-    return $dm;
-}
 
-function update_products($product_id, $tensp, $description, $category_id) {
-    $sql = "UPDATE products SET name = :tensp, description = :description, category_id = :category_id WHERE product_id = :product_id";
-    return pdo_execute($sql, [
-        'product_id' => $product_id,
-        'tensp' => $tensp,
-        'description' => $description,
-        'category_id' => $category_id
-    ]);
-}
+
+
+
+
 
 ?>

@@ -177,63 +177,27 @@
   color: blue;
 }
 /* slide show */
+/* Căn chỉnh slideshow */
 .slideshow-container {
   position: relative;
-  max-width: 1000px;
+  max-width: 100%;
   margin: auto;
   overflow: hidden;
 }
-
+/* Thêm hiệu ứng chuyển đổi */
 .mySlides {
   display: none;
   position: relative;
+  animation: fadeEffect 1.5s; /* Hiệu ứng mờ khi chuyển slide */
 }
 
-.mySlides img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
+@keyframes fadeEffect {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
 }
 
-.prev, .next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: auto;
-  padding: 16px;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 0 3px 3px 0;
-  user-select: none;
-}
-
-.prev {
-  left: 0;
-  border-radius: 3px 0 0 3px;
-}
-
-.next {
-  right: 0;
-  border-radius: 0 3px 3px 0;
-}
-
-.text {
-  color: #f2f2f2;
-  font-size: 18px;
-  position: absolute;
-  bottom: 8px;
-  width: 100%;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 8px 0;
-  border-radius: 8px;
-}
-
+/* Dots (các chấm chỉ slide hiện tại) */
 .dot {
-  cursor: pointer;
   height: 15px;
   width: 15px;
   margin: 0 5px;
@@ -241,9 +205,45 @@
   border-radius: 50%;
   display: inline-block;
   transition: background-color 0.6s ease;
+  cursor: pointer;
 }
 
-.active, .dot:hover {
+.dot:hover, .dot.active {
   background-color: #717171;
 }
 
+/* Các nút chuyển đổi (nếu cần thêm) */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+.prev {
+  left: 0;
+}
+
+.next {
+  right: 0;
+}
+
+/* Banner header */
+.content2 img {
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* Đảm bảo hình ảnh luôn cân đối */
+  margin-bottom: 10px;
+}

@@ -1,71 +1,119 @@
 <style>
-    .row {
+  /* Định dạng cho hàng chính */
+.row {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-  }
-  
-  /* Tiêu đề bảng */
-  .fretitle h1 {
-    font-size: 24px;
+}
+
+/* Tiêu đề của trang */
+.fretitle h1 {
+    font-size: 28px;
     text-align: center;
-    color: #333;
+    color: #2c3e50;
     margin-bottom: 20px;
-  }
-  
-  /* Khung chứa bảng */
-  .framcontent {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+/* Khung chứa bảng */
+.framcontent {
     width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
     overflow-x: auto; /* Cho phép cuộn ngang nếu bảng quá rộng */
-  }
-  
-  .dsloai table {
+}
+
+/* Tạo khoảng cách và đường viền cho bảng */
+.dsloai table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 10px;
-  }
-  
-  .dsloai th,
-  .dsloai td {
-    padding: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style cho tiêu đề bảng */
+.dsloai th,
+.dsloai td {
+    padding: 12px 15px;
     text-align: left;
-    border: 1px solid #ccc;
-  }
-  
-  .dsloai th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .dsloai td {
-    background-color: #ffffff;
-  }
-  
-  /* Style cho các hàng xen kẽ */
-  .dsloai tr:nth-child(even) td {
-    background-color: #f9f9f9;
-  }
-  
-  /* Style cho checkbox và các nút */
-  .dsloai input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-  }
-  
-  .dsloai input[type="button"] {
-    padding: 5px 10px;
-    margin: 0 5px;
-    background-color: #4CAF50;
+    border: 1px solid #e0e0e0;
+}
+
+/* Màu nền cho tiêu đề bảng */
+.dsloai th {
+    background-color: #3498db;
     color: white;
+    font-weight: bold;
+}
+
+/* Màu nền cho các ô dữ liệu */
+.dsloai td {
+    background-color: #ffffff;
+    color: #34495e;
+}
+
+/* Style cho hàng chẵn */
+.dsloai tr:nth-child(even) td {
+    background-color: #f9f9f9;
+}
+
+/* Style cho hàng lẻ */
+.dsloai tr:nth-child(odd) td {
+    background-color: #ffffff;
+}
+
+/* Cải thiện style cho checkbox */
+.dsloai input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+/* Style cho nút Sửa và Xóa */
+.dsloai input[type="button"] {
+    padding: 8px 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
     border-radius: 5px;
-  }
-  
-  .dsloai input[type="button"]:hover {
-    background-color: #45a049;
-  }
-  
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hiệu ứng khi di chuột lên nút */
+.dsloai input[type="button"]:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* Nút Thêm danh mục */
+a input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+/* Hiệu ứng khi di chuột lên nút Thêm danh mục */
+a input[type="submit"]:hover {
+    background-color: #27ae60;
+}
+
+/* Cải thiện khoảng cách giữa các phần tử */
+.mb10 {
+    margin-bottom: 10px;
+}
+
 </style>
 
 <div class="row">
