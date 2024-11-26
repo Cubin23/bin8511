@@ -1,15 +1,10 @@
 <?php
-try {
-    include "../model/pdo.php";
-    include "../model/danhmuc.php";
-    include "../model/sanpham.php";
-    include "../model/binhluan.php";
-    include "../model/khachhang.php";
-    include "header.php";
-} catch (Exception $e) {
-    error_log($e->getMessage());
-    die("Không thể tải dữ liệu, vui lòng kiểm tra lại.");
-}
+include "../model/pdo.php";
+include "../model/danhmuc.php";
+include "../model/khachhang.php";
+include "../model/binhluan.php";
+include "../model/sanpham.php";
+include "header.php";
 
 if (isset($_GET['act'])) {
     $act = $_GET['act'];
@@ -90,133 +85,189 @@ if (isset($_GET['act'])) {
             break;
         case 'addsp':
             if (isset($_POST['them']) && $_POST['them'] === 'them') {
-                $tensp = trim($_POST['tensp']); // Lấy tên danh mục và loại bỏ khoảng trắng
-                $price = trim($_POST['price']);
-                $category_id = trim($_POST['category_id']);
-                $description = trim($_POST['mota']); // Lấy mô tả và loại bỏ khoảng trắng
+                // Kiểm tra và lấy dữ liệu từ form
+                $ten_san_pham = trim($_POST['ten_san_pham'] ?? '');
+                $gia = trim($_POST['gia'] ?? '');
+                $danh_muc_id = $_POST['danh_muc_id'] ?? null;
+                $mo_ta = trim($_POST['mo_ta'] ?? '');
+                $error = ''; // Biến để lưu thông báo lỗi nếu có
 
-                // Kiểm tra các trường nhập
-                if (empty($tensp)) {
-                    $thongbao = "Vui lòng nhập tên danh mục!";
-                } elseif (empty($description)) {
-                    $thongbao = "Vui lòng nhập mô tả!";
-                } elseif (empty($price)) {
-                    $thongbao = "Vui lòng nhập giá sản phẩm!";
+                // Kiểm tra các trường bắt buộc
+                if (empty($ten_san_pham)) {
+                    $error .= "Tên sản phẩm không được để trống.<br>";
+                }
+                if (empty($gia)) {
+                    $error .= "Giá sản phẩm không được để trống.<br>";
+                }
+                if (empty($danh_muc_id)) {
+                    $error .= "Vui lòng chọn danh mục.<br>";
+                }
+                if (empty($mo_ta)) {
+                    $error .= "Mô tả sản phẩm không được để trống.<br>";
+                }
+
+                // Kiểm tra file ảnh
+                if (!isset($_FILES['anh_url']) || $_FILES['anh_url']['error'] === UPLOAD_ERR_NO_FILE) {
+                    $error .= "Vui lòng tải lên hình ảnh sản phẩm.<br>";
+                }
+
+                // Nếu có lỗi, không thực hiện thêm sản phẩm và hiển thị lỗi
+                if (!empty($error)) {
+                    $thongbao = "<div style='color: red;'>" . $error . "</div>";
                 } else {
-                    // Câu lệnh SQL sử dụng tham số chuẩn bị
-                    insert_products($tensp, $description, $price, $category_id);
+                    // Xử lý file upload nếu không có lỗi
+                    if (isset($_FILES['anh_url']) && $_FILES['anh_url']['error'] === UPLOAD_ERR_OK) {
+                        $filename = $_FILES['anh_url']['name'];
+                        $target_dir = "../upload/";
+                        $target_file = $target_dir . basename($filename);
 
-                    $thongbao = "Thêm mới danh mục thành công!";
+                        // Kiểm tra nếu file có thể tải lên
+                        if (move_uploaded_file($_FILES['anh_url']['tmp_name'], $target_file)) {
+                            $upload_status = "File uploaded successfully.";
+                            $anh_url = $filename; // Lưu tên ảnh vào biến
+                        } else {
+                            $upload_status = "Failed to upload file.";
+                            $anh_url = ''; // Nếu có lỗi khi upload, để giá trị mặc định
+                        }
+                    }
+
+                    // Gọi hàm thêm sản phẩm (sửa đúng tham số)
+                    insert_san_pham($ten_san_pham, $gia, $danh_muc_id, $mo_ta, $anh_url);
+
+                    $thongbao = "Thêm mới sản phẩm thành công!";
                 }
             }
 
+            // Load danh mục
+            $listcategory = loadall_danh_muc();
+
+            // Hiển thị form thêm
             include "sanpham/add.php";
             break;
+
+
+
+
         case 'listsp':
-            $listproduct = loadall_products();
+            $listsanpham = loadall_san_pham();
             include "sanpham/list.php";
             break;
         case 'xoasp':
-            if (isset($_GET['products_id']) && ($_GET['products_id'] > 0)) {
-                $product_id = intval($_GET['product_id']); // Lấy giá trị từ URL
-                delete_products($product_id);
+            if (isset($_GET['san_pham_id']) && ($_GET['san_pham_id'] > 0)) {
+                $san_pham_id = intval($_GET['san_pham_id']); // Lấy giá trị từ URL
+                delete_san_pham($san_pham_id);
             }
-            $listproduct = loadall_products();
+            $listsanpham = loadall_san_pham("", 0);
             include "sanpham/list.php";
             break;
 
         case 'suasp':
-            if (isset($_GET['product_id']) && ($_GET['product_id'] > 0)) {
-                $product_id = intval($_GET['product_id']); // Lấy giá trị từ URL
-                $dm = loadone_products($product_id);
+            if (isset($_GET['san_pham_id']) && ($_GET['san_pham_id'] > 0)) {
+                $san_pham_id = intval($_GET['san_pham_id']); // Lấy giá trị từ URL
+                $sanpham = loadone_san_pham($san_pham_id);
             }
+            $listcategory = loadall_danh_muc();
+
             include "sanpham/update.php";
             break;
         case 'updatesp':
-            if (isset($_POST['capnhat']) && isset($_POST['product_id']) && !empty($_POST['tensp'])) {
-                // Lấy dữ liệu từ form
-                $product_id = intval($_POST['product_id']);
-                $tensp = trim($_POST['tensp']);
-                $description = trim($_POST['mota']);
-                $category_id = intval($_POST['category_id']); // Chuyển thành số nguyên
+            if (isset($_GET['san_pham_id'])) {
+                $san_pham_id = $_GET['san_pham_id'];  // Lấy ID sản phẩm từ URL
+                echo "San Pham ID: " . $san_pham_id; // Kiểm tra ID
 
-                try {
-                    // Thực hiện câu lệnh cập nhật
-                    $rows_affected = update_products($product_id, $tensp, $description, $category_id);
-
-                    // Kiểm tra kết quả
-                    $thongbao = ($rows_affected > 0)
-                        ? "Cập nhật thành công!"
-                        : "Không có thay đổi nào được thực hiện (có thể dữ liệu mới trùng với dữ liệu cũ).";
-                } catch (Exception $e) {
-                    error_log("Lỗi cập nhật danh mục: " . $e->getMessage());
-                    $thongbao = "Có lỗi xảy ra trong quá trình cập nhật!";
+                $sanpham = loadone_san_pham($san_pham_id);
+                if (!$sanpham) {
+                    echo "Không tìm thấy sản phẩm với ID: " . $san_pham_id;
+                    exit;  // Nếu không có sản phẩm, dừng lại
                 }
-            } else {
-                $thongbao = "Dữ liệu không hợp lệ!";
-            }
 
-            // Lấy danh sách danh mục
-            $listcategory = loadall_products();
-            include "sanpham/list.php";
-            break;
-        case 'dsbl': // Hiển thị danh sách bình luận
-            include "../model/binhluan.php";
-            $san_pham_id = isset($_GET['san_pham_id']) ? intval($_GET['san_pham_id']) : 0;
-            $listbinhluan = loadall_binh_luan($san_pham_id);
-            include "binhluan/list.php";
-            break;
+                if (isset($_POST['update']) && $_POST['update'] === 'update') {
+                    // Lấy dữ liệu từ form
+                    $ten_san_pham = trim($_POST['ten_san_pham'] ?? '');
+                    $gia = trim($_POST['gia'] ?? '');
+                    $danh_muc_id = $_POST['danh_muc_id'] ?? null;
+                    $mo_ta = trim($_POST['mo_ta'] ?? '');
 
-        case 'xoabl': // Xóa bình luận
-            include "../model/binhluan.php";
-            if (isset($_GET['binh_luan_id'])) {
-                $binh_luan_id = intval($_GET['binh_luan_id']);
-                delete_binh_luan($binh_luan_id);
-            }
-            header("Location: index.php?act=dsbl");
-            break;
-            case 'dskh': // Hiển thị danh sách khách hàng
-                try {
-                    include "khachhang/list.php";
-                } catch (Exception $e) {
-                    error_log("Lỗi hiển thị danh sách khách hàng: " . $e->getMessage());
-                    echo "Có lỗi xảy ra khi tải danh sách khách hàng!";
-                }
-                break;
-            
-            case 'editkh': // Sửa thông tin khách hàng
-                if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0) {
-                    $id = intval($_GET['id']);
-                    try {
-                        include "khachhang/edit.php";
-                    } catch (Exception $e) {
-                        error_log("Lỗi khi sửa khách hàng với ID $id: " . $e->getMessage());
-                        echo "Có lỗi xảy ra khi sửa thông tin khách hàng!";
-                    }
-                } else {
-                    echo "ID khách hàng không hợp lệ!";
-                }
-                break;
-            
-                case 'deletekh': // Xóa khách hàng
-                    if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0) {
-                        $id = intval($_GET['id']);
-                        try {
-                            delete_customer($id);
-                            header("Location: index.php?act=dskh&message=success");
-                            exit;
-                        } catch (Exception $e) {
-                            error_log("Lỗi khi xóa khách hàng với ID $id: " . $e->getMessage());
-                            echo "Có lỗi xảy ra khi xóa khách hàng!";
+                    // Xử lý file ảnh
+                    $anh_url = ''; // Giá trị mặc định
+                    if (isset($_FILES['anh_url']) && $_FILES['anh_url']['error'] === UPLOAD_ERR_OK) {
+                        $filename = $_FILES['anh_url']['name'];
+                        $target_dir = "../upload/";
+                        $target_file = $target_dir . basename($filename);
+
+                        if (move_uploaded_file($_FILES['anh_url']['tmp_name'], $target_file)) {
+                            $anh_url = $filename;
+                        } else {
+                            $anh_url = $sanpham['anh_url']; // Giữ lại ảnh cũ nếu tải ảnh mới không thành công
                         }
                     } else {
-                        echo "ID khách hàng không hợp lệ!";
+                        $anh_url = $sanpham['anh_url']; // Giữ lại ảnh cũ nếu không có ảnh mới
                     }
-                    break;
-                
+
+                    // Cập nhật sản phẩm
+                    update_san_pham($san_pham_id, $ten_san_pham, $gia, $mo_ta, $danh_muc_id, $anh_url);
+
+                    $thongbao = "Cập nhật thành công!";
+                }
+
+                // Load danh mục
+                $listcategory = loadall_danh_muc();
+
+                // Hiển thị form cập nhật
+                include "sanpham/update.php";
+            } else {
+                echo "ID sản phẩm không tồn tại!";
+                exit;  // Dừng nếu không có ID sản phẩm trong URL
+            }
+            break;
+
+            case 'dsbl': // Danh sách bình luận
+                include "binhluan/list.php";
+                break;
+        
+            case 'binhluan_by_sp': // Bình luận theo sản phẩm
+                include "binhluan/comments_by_product.php";
+                break;
+        
+            case 'delete_binhluan': // Xóa bình luận
+                $binh_luan_id = $_GET['binh_luan_id'] ?? 0;
+                if ($binh_luan_id) {
+                    delete_comment($binh_luan_id);
+                    header("Location: index.php?act=dsbl");
+                }
+                break;
+        
             
 
+        case 'dskh': // Hiển thị danh sách khách hàng
+            $listkh = load_all_customers();
+            include "khachhang/list.php";
+            break;
 
+        case 'viewkh':
+            if (isset($_GET['id'])) {
+                $id = intval($_GET['id']);
+                $customer = load_customer_by_id($id);
+
+                if (!$customer) {
+                    echo "Không tìm thấy khách hàng.";
+                    exit;
+                }
+
+                include "khachhang/view.php";
+            } else {
+                echo "ID khách hàng không hợp lệ.";
+            }
+            break;
+
+
+        case 'deletekh': // Xóa khách hàng
+            if (isset($_GET['id'])) {
+                $id = $_GET['id'];
+                delete_customer($id);
+            }
+            header("Location: index.php?act=dskh");
+            exit;
 
         default:
             include "home.php";
