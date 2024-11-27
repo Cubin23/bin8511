@@ -1,7 +1,7 @@
 <?php 
 function pdo_get_connection() {
     try {
-        $dburl = "mysql:host=localhost;dbname=da1;charset=utf8";
+        $dburl = "mysql:host=localhost;dbname=da;charset=utf8";
         $username = 'root';
         $password = '';
         $conn = new PDO($dburl, $username, $password);
@@ -21,13 +21,21 @@ function pdo_get_connection() {
 * @param array $args mảng giá trị cung cấp các than số của $sql
 * @throws PDOException lỗi thực thi câu lệnh
 */
-function pdo_execute($sql, ...$params) {
+function pdo_execute($sql, $params = []) {
     try {
-        $conn = pdo_get_connection();
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($params); // Truyền tham số dạng mảng
+        $conn = pdo_get_connection(); // Kết nối PDO
+        $stmt = $conn->prepare($sql); // Chuẩn bị câu lệnh
+        if (!is_array($params)) {
+            throw new InvalidArgumentException("Tham số truyền vào phải là một mảng."); 
+        }
+        $stmt->execute($params); // Thực thi câu lệnh
+        return $stmt->rowCount(); // Trả về số dòng bị ảnh hưởng
     } catch (PDOException $e) {
-        throw new Exception("Lỗi khi thực thi truy vấn: " . $e->getMessage());
+        error_log("Lỗi PDO: " . $e->getMessage()); // Ghi lại lỗi
+        echo "Lỗi PDO: " . $e->getMessage(); // Hiển thị thông báo lỗi
+        return false; // Trả về false nếu có lỗi
+    } finally {
+        unset($conn); // Giải phóng kết nối
     }
 }
 
@@ -63,22 +71,20 @@ function pdo_query($sql, $params = []) {
 * @return array mảng các bản ghi
 * @throws PDOException lỗi thực thi câu lệnh
 */
-function pdo_query_one($sql){
-    $sql_agrs = array_slice(func_get_args() ,1);
-    try{
-        $conn = pdo_get_connection();
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($sql_agrs);
-        $row = $stmt-> fetch(PDO::FETCH_ASSOC);
-        return $row;
-    }
-    catch(PDOException $e){
+function pdo_query_one($sql, $params = []) {
+    try {
+        $conn = pdo_get_connection(); // Kết nối cơ sở dữ liệu
+        $stmt = $conn->prepare($sql); // Chuẩn bị câu lệnh SQL
+        $stmt->execute($params); // Thực thi câu lệnh SQL
+        $row = $stmt->fetch(PDO::FETCH_ASSOC); // Lấy một bản ghi
+        return $row; // Trả về bản ghi
+    } catch (PDOException $e) {
         throw $e;
-    }
-    finally{
-        unset($conn);
+    } finally {
+        unset($conn); // Giải phóng kết nối
     }
 }
+
 /** 
  * thực thi câu lệnh sql thao tác dữ liêu(INSERT, UPDATE, DELETE)
 * @param string $sql câu lệnh sql

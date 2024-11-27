@@ -221,52 +221,48 @@ if (isset($_GET['act'])) {
             }
             break;
 
-            case 'dsbl': // Danh sách bình luận
-                include "binhluan/list.php";
-                break;
-        
-            case 'binhluan_by_sp': // Bình luận theo sản phẩm
-                include "binhluan/comments_by_product.php";
-                break;
-        
-            case 'delete_binhluan': // Xóa bình luận
-                $binh_luan_id = $_GET['binh_luan_id'] ?? 0;
-                if ($binh_luan_id) {
-                    delete_comment($binh_luan_id);
-                    header("Location: index.php?act=dsbl");
-                }
-                break;
-        
-            
+        case 'dsbl': // Danh sách bình luận
+            include "binhluan/list.php";
+            break;
 
-        case 'dskh': // Hiển thị danh sách khách hàng
-            $listkh = load_all_customers();
-            include "khachhang/list.php";
+        case 'binhluan_by_sp': // Bình luận theo sản phẩm
+            include "binhluan/comments_by_product.php";
+            break;
+
+        case 'delete_binhluan': // Xóa bình luận
+            $binh_luan_id = $_GET['binh_luan_id'] ?? 0;
+            if ($binh_luan_id) {
+                delete_comment($binh_luan_id);
+                header("Location: index.php?act=dsbl");
+            }
+            break;
+
+        case 'dskh':
+            $list_customers = load_all_customers(); // Lấy danh sách khách hàng
+            include "khachhang/list.php"; // Hiển thị danh sách
             break;
 
         case 'viewkh':
             if (isset($_GET['id'])) {
                 $id = intval($_GET['id']);
-                $customer = load_customer_by_id($id);
-
+                $customer = load_customer_by_id($id); // Lấy thông tin khách hàng theo ID
                 if (!$customer) {
                     echo "Không tìm thấy khách hàng.";
                     exit;
                 }
-
-                include "khachhang/view.php";
+                include "khachhang/view.php"; // Hiển thị thông tin chi tiết khách hàng
             } else {
                 echo "ID khách hàng không hợp lệ.";
+                exit;
             }
             break;
 
-
-        case 'deletekh': // Xóa khách hàng
+        case 'deletekh':
             if (isset($_GET['id'])) {
-                $id = $_GET['id'];
-                delete_customer($id);
+                $id = intval($_GET['id']);
+                delete_customer($id); // Xóa khách hàng
             }
-            header("Location: index.php?act=dskh");
+            header("Location: index.php?act=dskh"); // Quay lại danh sách
             exit;
 
         default:
