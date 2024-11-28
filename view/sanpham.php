@@ -1,4 +1,7 @@
 <div class="content">
+<div class="breadcrumb">
+            <a href="index.php">Trang chủ</a> » <a href="tintuc.php">Sản phẩm</a>
+        </div>
     <h1>Sản phẩm</h1>
     <p>
         Dưới đây là các sản phẩm nổi bật tại Tiny Garden:
@@ -24,6 +27,20 @@
     </div>
 </div>
 <style>
+    .breadcrumb {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #4CAF50;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
     /* Phong cách chung cho nội dung */
 .content {
     width: 1150px;

@@ -1,4 +1,7 @@
 <div class="content">
+<div class="breadcrumb">
+        <a href="index.php">Trang chủ</a> » <a href="tintuc.php">Liên hệ</a>
+    </div>
     <h1>Liên hệ</h1>
     <p>
         Hãy liên hệ với chúng tôi nếu bạn có bất kỳ câu hỏi nào về sản phẩm hoặc dịch vụ.
@@ -31,6 +34,20 @@
     font-family: Arial, sans-serif;
 }
 
+.breadcrumb {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #4CAF50;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
 /* Tiêu đề */
 .content h1 {
     font-size: 2.5em;
