@@ -1,112 +1,101 @@
 <style>
-   /* Định dạng container */
-.container {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 25px 30px;
-    background: #fdfdfd;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    border: 1px solid #eaeaea;
-    font-family: 'Roboto', sans-serif;
+    /* Tổng thể cho form */
+.row {
+    margin: 10px 0;
 }
 
-/* Tiêu đề */
-.container h2 {
-    font-size: 28px;
+.formtitle h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
     text-align: center;
     margin-bottom: 20px;
-    color: #2c3e50;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
-/* Định dạng form-group */
+.formcontent {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 0 auto;
+}
 
-.form-group input {
+.mb10 {
+    margin-bottom: 10px;
+}
+
+/* Input và nút */
+input[type="text"], 
+input[type="submit"], 
+input[type="reset"], 
+input[type="button"] {
     width: 100%;
-    padding: 12px 15px;
-    font-size: 16px;
+    padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 5px;
+    font-size: 14px;
     box-sizing: border-box;
-    transition: all 0.3s ease;
-    background-color: #fff;
 }
 
-.form-group input:focus {
-    border-color: #3498db;
+input[type="text"]:focus {
+    border-color: #007BFF;
     outline: none;
-    box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Nút bấm */
-.register-btn {
-    width: calc(50% - 10px);
-    padding: 12px 15px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    background-color: #1abc9c;
-    border: none;
-    border-radius: 8px;
+input[type="submit"], 
+input[type="reset"], 
+input[type="button"] {
+    background-color: #007BFF;
+    color: white;
     cursor: pointer;
-    margin-top: 10px;
+    transition: background-color 0.3s ease;
+    border: none;
+    margin-top: 5px;
+}
+
+input[type="submit"]:hover, 
+input[type="reset"]:hover, 
+input[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+/* Thông báo */
+form .row:last-child {
+    margin-top: 15px;
+    font-size: 14px;
+    color: green;
     text-align: center;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.register-btn:hover {
-    background-color: #16a085;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.register-btn:last-of-type {
-    background-color: #3498db;
-}
-
-.register-btn:last-of-type:hover {
-    background-color: #2980b9;
-}
-
-/* Hiển thị thông báo */
-.container div {
-    margin-top: 20px;
-    text-align: center;
-    color: #e74c3c;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-/* Tạo khoảng cách giữa các nút */
-.container div a {
-    margin-left: 10px;
 }
 
 </style>
-<div class="container">
-            <h2>Thêm Danh Mục</h2>
-            <form action="index.php?act=adddm" method="post">
-                <div class="form-group">
-                    <label>Tên Danh Mục</label>
-                    <input type="text" name="ten_danh_muc" >
-                </div>
-                <div class="form-group">
-                    <label>Mô tả</label>
-                    <input type="" name="mo_ta" >
-                </div>
-                <div>
-                <button type="submit" class="register-btn" name="them" value="them">Thêm</button>
-                <a href="index.php?act=listdm"><input class="register-btn" value="Danh sách"></input></a>
-                </div>
-                <?php 
-            if(isset($thongbao)&&($thongbao!=""))
-            echo $thongbao;
-            ?>
-            </form>
-            
+
+<div class="row">
+            <div class="row formtitle">
+                <h1>Thêm mới Danh Mục</h1>
+            </div>
+            <div class="row formcontent">
+                <form action="index.php?act=adddm" method="post">
+                    <div class="row mb10">
+                        Mã loại <br>
+                        <input type="text" name="danh_muc_id" disabled>
+                    </div>
+                    
+                    <div class="row mb10">
+                        Tên Danh Mục <br>
+                        <input type="text" name="ten_danh_muc">
+                    </div>
+                    <div class="row mb10">
+                        <input type="submit" name="themmoi" value="Thêm mới">
+                        <input type="reset" value="Nhập lại">
+                        <a href="index.php?act=listdm"><input type="button" value="Danh sách"></a>
+                    </div>
+                    <?php
+                    if(isset($thongbao)&&($thongbao!=""))
+                    echo $thongbao; 
+                    ?>
+                </form>
+            </div>
         </div>
-      
+    </div>

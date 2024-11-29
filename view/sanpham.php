@@ -1,98 +1,139 @@
-<div class="content">
-    <h1>Sản phẩm</h1>
-    <p>
-        Dưới đây là các sản phẩm nổi bật tại Tiny Garden:
-    </p>
-    <div class="products">
-        <div class="product">
-            <img src="view/image/93_2.jpg" alt="Cây cảnh văn phòng" width="300" height="200">
-            <p>Đồ vật trang trí</p>
-            <p>200.000 VNĐ</p>
-        </div>
-        <div class="product">
-            <img src="view/image/102_2.jpg" alt="Cây cảnh để bàn" width="300" height="200">
-            <p>Cây cảnh để bàn</p>
-            <p>170.000 VNĐ</p>
-        </div>
-        <div class="product">
-            <img src="view/image/90_2.jpg" alt="Chậu cây sen đá" width="300" height="200">
-            <p>Chậu cây sen đá</p>
-            <p>50.000 VNĐ</p>
-        </div>
-       
-        <!-- Thêm các sản phẩm khác tương tự -->
-    </div>
-</div>
 <style>
-    /* Phong cách chung cho nội dung */
-.content {
-    width: 1150px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    font-family: Arial, sans-serif;
-}
-
-/* Tiêu đề */
-.content h1 {
-    font-size: 2.5em;
-    color: #4CAF50;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Phần giới thiệu */
-.content p {
-    font-size: 1.2em;
-    color: #333;
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-/* Bố cục sản phẩm */
+/* Bố cục cho các sản phẩm */
 .products {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between; /* Tạo khoảng cách đều giữa các sản phẩm */
+    display: flex; /* Dàn sản phẩm theo hàng ngang */
+    flex-wrap: wrap; /* Cho phép xuống dòng khi không còn đủ chỗ */
+    justify-content: flex-start; /* Căn trái các sản phẩm */
     gap: 20px; /* Khoảng cách giữa các sản phẩm */
+    padding: 20px;
+    margin: 0 auto;
+    overflow-x: auto; /* Cho phép cuộn ngang nếu số lượng sản phẩm quá nhiều */
 }
 
-/* Phong cách cho mỗi sản phẩm */
+/* Bố cục từng sản phẩm */
 .product {
-    background-color: #f9f9f9;
-    padding: 15px;
-    text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    flex: 1 1 calc(25% - 20px); /* Đảm bảo 4 sản phẩm trên 1 hàng */
+    flex: 0 0 calc(25% - 20px); /* 4 sản phẩm mỗi hàng, trừ đi khoảng cách */
     box-sizing: border-box;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    overflow: hidden; /* Đảm bảo không bị tràn */
 }
 
+/* Hiệu ứng hover cho sản phẩm */
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Hình ảnh sản phẩm */
 .product img {
     width: 100%;
     height: auto;
+    max-height: 200px; /* Đảm bảo hình ảnh không quá lớn */
+    object-fit: cover; /* Giữ tỷ lệ và không bị bóp méo */
     border-radius: 8px;
     margin-bottom: 10px;
 }
 
+/* Tiêu đề và giá sản phẩm */
 .product p {
-    font-size: 1.2em;
+    font-size: 16px;
+    font-weight: bold;
     color: #333;
     margin: 10px 0;
 }
 
-.product p:last-child {
-    font-weight: bold;
-    color: #4CAF50;
+/* Phần thêm vào giỏ hàng */
+.product .add-to-cart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-/* Hiệu ứng khi di chuột vào sản phẩm */
-.product:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: 0.3s;
+.product .add-to-cart input {
+    width: 50px;
+    padding: 5px;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.product .add-to-cart button {
+    padding: 8px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.product .add-to-cart button:hover {
+    background-color: #218838;
+}
+
+/* Cải thiện hiển thị cho các thiết bị nhỏ */
+@media screen and (max-width: 1200px) {
+    .product {
+        flex: 0 0 calc(33.33% - 20px); /* 3 sản phẩm mỗi hàng */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .product {
+        flex: 0 0 calc(50% - 20px); /* 2 sản phẩm mỗi hàng */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .product {
+        flex: 0 0 100%; /* 1 sản phẩm mỗi hàng */
+    }
 }
 
 </style>
+
+<div class="products">
+    <?php 
+    $i = 0;
+    foreach ($dssp as $sp) {
+        extract($sp);
+        $linksp = "index.php?act=sanphamchitiet&san_pham_id=".$san_pham_id;
+
+        // Kiểm tra nếu đường dẫn ảnh không hợp lệ
+        if (empty($anh_url)) {
+            echo "Ảnh không tồn tại cho sản phẩm: $ten_san_pham<br>";
+            continue;
+        }
+
+        // Tạo đường dẫn URL tuyệt đối
+        $anh_url = "/DA1/upload/" . $anh_url;
+
+        // Kiểm tra file tồn tại
+        if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $anh_url)) {
+            echo "File ảnh không tồn tại: " . $anh_url . "<br>";
+            continue;
+        }
+
+        // Xác định class "mr"
+        $product = (($i == 2) || ($i == 5) || ($i == 8) || ($i==11)) ? "product" : "";
+
+        // Hiển thị HTML
+        echo '<div class="product">
+            <a href="'.$linksp.'"><img alt="Cây cảnh văn phòng" src="' . $anh_url . '" />
+            <p>' . $ten_san_pham . '</p>
+            <p>' . $gia . ' VNĐ || <a href=""><i class="fas fa-shopping-cart"></i></a></p> </a>
+        </div>';
+
+        $i += 1;
+    }
+    ?>
+</div>

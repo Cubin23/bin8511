@@ -125,6 +125,10 @@ body {
             <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
         </div>
         <div class="form-group">
+            <label for="dia_chi">Địa Chỉ:</label>
+            <input type="address" id="dia_chi" name="dia_chi" placeholder="Nhập Địa Chỉ" required>
+        </div>
+        <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" placeholder="Nhập email" required>
         </div>

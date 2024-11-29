@@ -1,155 +1,151 @@
 <style>
-  /* Định dạng cho hàng chính */
+    /* Tổng quan */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
 .row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
 }
 
-/* Tiêu đề của trang */
-.fretitle h1 {
-    font-size: 28px;
+/* Tiêu đề */
+.formtitle h1 {
+    font-size: 24px;
+    color: #444;
     text-align: center;
-    color: #2c3e50;
     margin-bottom: 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
 }
 
-/* Khung chứa bảng */
-.framcontent {
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-x: auto; /* Cho phép cuộn ngang nếu bảng quá rộng */
-}
-
-/* Tạo khoảng cách và đường viền cho bảng */
-.dsloai table {
+/* Bảng */
+table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Style cho tiêu đề bảng */
-.dsloai th,
-.dsloai td {
-    padding: 12px 15px;
+table th, table td {
+    border: 1px solid #ddd;
     text-align: left;
-    border: 1px solid #e0e0e0;
+    padding: 10px;
 }
 
-/* Màu nền cho tiêu đề bảng */
-.dsloai th {
-    background-color: #3498db;
-    color: white;
+table th {
+    background-color: #f8f8f8;
+    color: #333;
     font-weight: bold;
 }
 
-/* Màu nền cho các ô dữ liệu */
-.dsloai td {
-    background-color: #ffffff;
-    color: #34495e;
-}
-
-/* Style cho hàng chẵn */
-.dsloai tr:nth-child(even) td {
+table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* Style cho hàng lẻ */
-.dsloai tr:nth-child(odd) td {
-    background-color: #ffffff;
+table tr:hover {
+    background-color: #f1f1f1;
 }
 
-/* Cải thiện style cho checkbox */
-.dsloai input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-}
-
-/* Style cho nút Sửa và Xóa */
-.dsloai input[type="button"] {
-    padding: 8px 16px;
-    background-color: #3498db;
-    color: white;
+table td input[type="button"] {
+    padding: 5px 10px;
     border: none;
-    border-radius: 5px;
+    background-color: #007BFF;
+    color: #fff;
     cursor: pointer;
+    border-radius: 3px;
     font-size: 14px;
-    margin: 0 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Hiệu ứng khi di chuột lên nút */
-.dsloai input[type="button"]:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
+table td input[type="button"]:hover {
+    background-color: #0056b3;
 }
 
-/* Nút Thêm danh mục */
-a input[type="submit"] {
-    padding: 10px 20px;
-    background-color: #2ecc71;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-    margin-top: 20px;
-}
-
-/* Hiệu ứng khi di chuột lên nút Thêm danh mục */
-a input[type="submit"]:hover {
-    background-color: #27ae60;
-}
-
-/* Cải thiện khoảng cách giữa các phần tử */
+/* Nút chức năng */
 .mb10 {
     margin-bottom: 10px;
 }
 
+.mb10 input[type="button"] {
+    padding: 8px 12px;
+    border: none;
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.mb10 input[type="button"]:hover {
+    background-color: #218838;
+}
+
+.mb10 a input[type="button"] {
+    background-color: #17a2b8;
+}
+
+.mb10 a input[type="button"]:hover {
+    background-color: #117a8b;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Form container */
+.formcontent {
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 </style>
-
 <div class="row">
-          <div class="row fretitle">
-            <h1>DANH SÁCH DANH MỤC</h1>
-          </div>
-          <div class="row framcontent">
-            <div class="row mb10 dsloai">
-              <table>
-                <tr>
-                  <th></th>
-                  <th>Mã Danh Mục</th>
-                  <th>Tên Danh Mục</th>
-                  <th>Mô tả</th>
-                  <th></th>
-                </tr>
-                <?php 
-                foreach($listdanhmuc as $danhmuc){
-                    extract($danhmuc);
-                    $suadm="index.php?act=suadm&danh_muc_id=".$danh_muc_id;
-                    $xoadm="index.php?act=xoadm&danh_muc_id=".$danh_muc_id;
-                    echo '<tr>
-                  <td><input type="checkbox" name="" id=""></td>
-                  <td>'.$danh_muc_id.'</td>
-                  <td>'.$ten_danh_muc.'</td>
-                  <td>'.$mo_ta.'</td>
-                  <td> <a href="'.$suadm.'"><input type="button" value="Sửa"></a><a href="'.$xoadm.'"><input type="button" value="Xóa"></a></td>
-                </tr>';
-                }
-                
-
-                ?>
-                
-              </table>
-              <a href="index.php?act=adddm"><input style="cursor: pointer" type="submit" value="Thêm danh mục"></a>
+            <div class="row formtitle">
+                <h1>Danh sách loại hàng hóa</h1>
             </div>
-
-          </div>
+            <div class="row formcontent">
+                <div class="row mb10 formdsloai">
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th>Mã loại</th>
+                            <th>Tên loại</th>
+                            <th></th>
+                        </tr>
+                        <?php 
+                        foreach ($listdanhmuc as $danhmuc){
+                            extract($danhmuc);
+                            $suadm="index.php?act=suadm&danh_muc_id=".$danh_muc_id;
+                            $xoadm="index.php?act=xoadm&danh_muc_id=".$danh_muc_id;
+                            echo '<tr>
+                                  <td><input type="checkbox" name="" id=""></td>
+                                  <td>'.$danh_muc_id.'</td>
+                                  <td>'.$ten_danh_muc.'</td>
+                                  <td><a href="'.$suadm.'"><input type="button" name="" value="Sửa"></a> <a href="'.$xoadm.'"><input type="button" value="Xóa"></a></td>
+                                </tr>';
+                        }
+                        ?>
+                       
+                    </table>
+                </div>
+                <div class="row mb10">
+                    <input type="button" value="Chọn tất cả">
+                    <input type="button" value="Bỏ chọn tất cả">
+                    <input type="button" value="Xóa các mục đã chọn">
+                    <a href="index.php?act=adddm"><input type="button" value="Nhập thêm"></a>
+                </div>
+            </div>
         </div>

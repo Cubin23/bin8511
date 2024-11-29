@@ -1,168 +1,182 @@
 <style>
-    /* Container của form */
-.container {
-    width: 70%;
+/* General form styling */
+form {
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Tiêu đề form */
-.container h2 {
+/* Title styling */
+.formtitle h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
     text-align: center;
-    color: #333;
-    font-size: 28px;
     margin-bottom: 20px;
 }
 
-/* Các nhóm input */
-.form-group {
-    margin-bottom: 20px;
+/* Form content */
+.formcontent {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
 }
 
-/* Label của các input */
-.form-group label {
-    display: block;
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 8px;
-}
-
-/* Input và textarea */
-.form-group input[type="text"],
-.form-group textarea,
-.form-group select {
+/* Input field styling */
+input[type="text"],
+textarea,
+select,
+input[type="file"] {
     width: 100%;
     padding: 10px;
+    margin: 5px 0 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
     font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
 }
 
-.form-group textarea {
-    resize: vertical;
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #6c757d;
+    outline: none;
 }
 
-/* Style cho nút submit */
-button[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
+/* Label styling */
+label {
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Button styling */
+input[type="submit"],
+input[type="reset"],
+button {
     padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
     border: none;
     border-radius: 5px;
+    font-size: 14px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    margin-right: 10px;
 }
 
-button[type="submit"]:hover {
-    background-color: #45a049;
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+button:hover {
+    background-color: #0056b3;
 }
 
-/* Style cho nút quay lại */
-button[type="button"] {
-    background-color: #f44336;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-left: 10px;
-    transition: background-color 0.3s;
-}
-
-button[type="button"]:hover {
-    background-color: #d32f2f;
-}
-
-/* Style cho hình ảnh hiện tại */
-.form-group img {
+/* Image preview styling */
+img {
     margin-top: 10px;
     border-radius: 5px;
 }
 
-/* Cải thiện độ sáng cho ảnh và các phần thông báo */
-small {
-    color: #777;
+/* Error messages */
+.error {
+    color: red;
     font-size: 12px;
-    margin-top: 5px;
-    display: inline-block;
+    margin-top: -15px;
+    margin-bottom: 10px;
 }
 
-/* Style cho các phần tử nhập liệu khi có lỗi */
-input:invalid, textarea:invalid, select:invalid {
-    border-color: #f44336;
-}
+/* Responsive design */
+@media (max-width: 768px) {
+    form {
+        width: 100%;
+        padding: 15px;
+    }
 
-/* Cải thiện hiển thị các trường đã điền thông tin */
-input:focus, textarea:focus, select:focus {
-    border-color: #4CAF50;
-    outline: none;
+    .formtitle h1 {
+        font-size: 20px;
+    }
+
+    .row {
+        margin-bottom: 15px;
+    }
+
+    input[type="text"],
+    textarea,
+    select,
+    input[type="file"] {
+        font-size: 16px;
+    }
+
+    input[type="submit"],
+    input[type="reset"],
+    button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+    }
 }
 
 </style>
-
 <?php
-// Giả sử bạn đã lấy thông tin sản phẩm từ cơ sở dữ liệu theo ID sản phẩm
-// Ví dụ: $sanpham = get_sanpham_by_id($san_pham_id);
-
 if(is_array($sanpham)){
     extract($sanpham);
-}
+} 
+$anh_urlpath="../upload/".$anh_url;
+if(is_file($anh_urlpath)){
+
+    $anh_url="<img src='$anh_urlpath' height='80'>";
+    
+}else{
+            $anh_url = "no photo";
+                 }
 ?>
 
-<div class="container">
-    <h2>Cập Nhật Sản Phẩm</h2>
-    <form action="index.php?act=updatesp" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-            <label>Mã Sản phẩm</label>
-            <input type="text" name="san_pham_id" value="<?php echo htmlspecialchars($sanpham['san_pham_id']); ?>" required>
-        </div>
-        <div class="form-group">
-            <label>Tên sản phẩm</label>
-            <input type="text" name="ten_san_pham" value="<?php echo htmlspecialchars($sanpham['ten_san_pham']); ?>" required>
-        </div>
-        <div class="form-group">
-            <label>Giá sản phẩm</label>
-            <input type="text" name="gia" value="<?php echo htmlspecialchars($sanpham['gia']); ?>" required>
-        </div>
-        <div class="form-group">
-            <label>Mô tả</label>
-            <textarea name="mo_ta" rows="5" required><?php echo htmlspecialchars($sanpham['mo_ta']); ?></textarea>
-        </div>
-        <div class="form-group">
-            <label>Danh Mục</label>
-            <select name="danh_muc_id" >
-    <?php 
-    // Kiểm tra xem danh mục có dữ liệu không
-    if (!empty($listcategory)) {
-        foreach ($listcategory as $danhmuc) {
-            // Kiểm tra nếu danh mục của sản phẩm hiện tại bằng danh mục trong vòng lặp
-            $selected = ($danhmuc['danh_muc_id'] == $sanpham['danh_muc_id']) ? 'selected' : '';
-            echo '<option value="' . $danhmuc['danh_muc_id'] . '" ' . $selected . '>' . $danhmuc['ten_danh_muc'] . '</option>';
-        }
-    } else {
-        echo '<option value="">Không có danh mục</option>';
-    }
-    ?>
-</select>
+<div class="row">
+            <div class="row formtitle">
+                <h1>Cập nhật loại hàng hóa</h1>
+            </div>
+            <div class="row formcontent">
+            <form action="index.php?act=updatesp" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="san_pham_id" value="<?=$san_pham_id?>">
+    <div class="row mb10">
+        <label for="iddanhmuc">Danh mục</label>
+        <select name="iddanhmuc" id="iddanhmuc">
+            <?php foreach ($listdanhmuc as $danhmuc): ?>
+                <option value="<?=$danhmuc['danh_muc_id']?>" <?=($danh_muc_id == $danhmuc['danh_muc_id']) ? 'selected' : ''?>><?=$danhmuc['ten_danh_muc']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="row mb10">
+        <label for="san_pham_id">Mã Sản Phẩm</label>
+        <input type="text" name="san_pham_id" id="san_pham_id" value="<?=$san_pham_id?>" readonly>
+    </div>
+    <div class="row mb10">
+        <label for="ten_san_pham">Tên sản phẩm</label>
+        <input type="text" name="ten_san_pham" id="ten_san_pham" value="<?=$ten_san_pham?>">
+    </div>
+    <div class="row mb10">
+        <label for="gia">Giá sản phẩm</label>
+        <input type="text" name="gia" id="gia" value="<?=$gia?>">
+    </div>
+    <div class="row mb10">
+                        Hình ảnh <br>
+                        <input type="file" name="anh_url" >
+                        <?=$anh_url?>
+                    </div>
+    <div class="row mb10">
+        <label for="mo_ta">Mô tả</label>
+        <textarea name="mo_ta" id="mo_ta"><?=$mo_ta?></textarea>
+    </div>
+    <div class="row mb10">
+        <input type="submit" name="capnhat" value="Cập nhật">
+        <input type="reset" value="Nhập lại">
+        <a href="index.php?act=listsp"><button type="button">Danh sách</button></a>
+    </div>
+</form>
 
+            </div>
         </div>
-        <div class="form-group">
-            <label>Hình ảnh</label>
-            <input type="file" name="anh_url">
-            <br>
-            <img src="../upload/<?php echo $sanpham['anh_url']; ?>" alt="Hình ảnh sản phẩm hiện tại" width="80">
-            <br>
-            <small>Chọn ảnh mới để thay đổi hình ảnh.</small>
-        </div>
-        <div>
-            <button type="submit" name="update" value="update">Cập nhật</button>
-            <a href="index.php?act=listsp"><button type="button">Quay lại danh sách</button></a>
-        </div>
-    </form>
-</div>
+    </div>

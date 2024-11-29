@@ -1,155 +1,123 @@
 <style>
-/* Định dạng container */
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e6e6e6;
-    font-family: 'Roboto', sans-serif;
+    /* Tổng thể cho form */
+.row {
+    margin: 10px 0;
 }
 
-/* Tiêu đề */
-.container h2 {
-    font-size: 30px;
-    text-align: center;
-    margin-bottom: 25px;
-    color: #2c3e50;
+.formtitle h1 {
+    font-size: 24px;
     font-weight: bold;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-}
-
-/* Định dạng form-group */
-.form-group {
+    color: #333;
+    text-align: center;
     margin-bottom: 20px;
 }
 
-.form-group label {
-    display: block;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #34495e;
+.formcontent {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 0 auto;
 }
 
-.form-group input,
-.form-group textarea {
+.mb10 {
+    margin-bottom: 10px;
+}
+
+/* Input và nút */
+input[type="text"], 
+input[type="submit"], 
+input[type="reset"], 
+input[type="button"] {
     width: 100%;
-    padding: 12px 15px;
-    font-size: 16px;
+    padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 5px;
+    font-size: 14px;
     box-sizing: border-box;
-    background-color: #fff;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-    border-color: #3498db;
+input[type="text"]:focus {
+    border-color: #007BFF;
     outline: none;
-    box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Định dạng nút */
-.register-btn {
-    width: calc(50% - 10px);
-    padding: 12px 15px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    background-color: #1abc9c;
-    border: none;
-    border-radius: 8px;
+input[type="submit"], 
+input[type="reset"], 
+input[type="button"] {
+    background-color: #007BFF;
+    color: white;
     cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    margin: 10px 5px 0;
-    display: inline-block;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease;
+    border: none;
+    margin-top: 5px;
 }
 
-.register-btn:hover {
-    background-color: #16a085;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Nút liên kết "Danh sách" */
-.register-btn:last-of-type {
-    background-color: #3498db;
-}
-
-.register-btn:last-of-type:hover {
-    background-color: #2980b9;
-}
-
-/* Định dạng textarea */
-textarea {
-    resize: none;
-    font-family: 'Roboto', sans-serif;
+input[type="submit"]:hover, 
+input[type="reset"]:hover, 
+input[type="button"]:hover {
+    background-color: #0056b3;
 }
 
 /* Thông báo */
-.container div {
-    margin-top: 20px;
+form .row:last-child {
+    margin-top: 15px;
+    font-size: 14px;
+    color: green;
     text-align: center;
-    color: #e74c3c;
-    font-size: 16px;
-    font-weight: bold;
 }
 
-/* Tạo khoảng cách giữa các phần tử */
-.form-group input[type="file"] {
-    padding: 5px;
-}
-
-
-}
 </style>
-<div class="container">
-            <h2>Thêm Sản Phẩm</h2>
-            <form action="index.php?act=addsp" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label>Tên sản phẩm</label>
-                    <input type="text" name="ten_san_pham" >
-                </div>
-                <div class="form-group">
-                    <label>Giá sản phẩm</label>
-                    <input type="text" name="gia" >
-                </div>
-                <div class="form-group">
-                    <label>Hình ảnh</label>
-                    <input type="file" name="anh_url" >
-                </div>
-                <div class="form-group">
-                    <label>Danh Mục</label>
-                    <select name="danh_muc_id">
-                        <?php 
-                        foreach($listcategory as $danhmuc){
-                            extract($danhmuc);
-                            echo '<option value="' . $danh_muc_id . '">' . $ten_danh_muc . '</option>';
-                        }
-                        ?>
-                    </select>
-                </div>
 
-                <div class="form-group">
-                    <label>Mô tả</label>
-                    <textarea style="width: 340px; height: 200px" type="text" name="mo_ta" > </textarea>
-                </div>
-                <div>
-                <button type="submit" class="register-btn" name="them" value="them">Thêm</button>
-                <a href="index.php?act=listsp"><input class="register-btn" value="Danh sách"></input></a>
-                </div>
-                <?php 
-            if(isset($thongbao)&&($thongbao!=""))
-            echo $thongbao;
-            ?>
-            </form>
-            
+<div class="row">
+            <div class="row formtitle">
+                <h1>Thêm mới sản phẩm</h1>
+            </div>
+            <div class="row formcontent">
+                <form action="index.php?act=addsp" method="post" enctype="multipart/form-data">
+                    <div class="row mb10">
+                        Danh mục <br>
+                        <select name="danh_muc_id" id="">
+                            <?php
+                            foreach($listdanhmuc as $danhmuc){
+                                extract($danhmuc);
+                                echo '<option value="'.$danh_muc_id.'">'.$ten_danh_muc.'</option>';
+                            } 
+                            ?>
+                        
+                        </select>
+                    </div>
+                    
+                    <div class="row mb10">
+                        Tên sản phẩm <br>
+                        <input type="text" name="ten_san_pham">
+                    </div>
+                    <div class="row mb10">
+                        Giá sản phẩm <br>
+                        <input type="text" name="gia">
+                    </div>
+                    <div class="row mb10">
+                        Hình ảnh <br>
+                        <input type="file" name="anh_url">
+                    </div>
+                    <div class="row mb10">
+                        Mô tả <br>
+                        <textarea name="mo_ta" id="" cols="50" rows="10"></textarea>
+                    </div>
+                    
+
+                    <div class="row mb10">
+                        <input type="submit" name="themmoi" value="Thêm mới">
+                        <input type="reset" value="Nhập lại">
+                        <a href="index.php?act=listsp"><input type="button" value="Danh sách"></a>
+                    </div>
+                    <?php
+                    if(isset($thongbao)&&($thongbao!=""))
+                    echo $thongbao; 
+                    ?>
+                </form>
+            </div>
         </div>
-      
+    </div>
