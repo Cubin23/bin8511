@@ -6,6 +6,7 @@
     <title>Thông Tin Đặt Hàng</title>
     <style>
         /* Tổng thể */
+/* Tổng thể */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -42,6 +43,7 @@ body {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 15px;
+    color: #007bff; /* Màu xanh cho tiêu đề */
 }
 
 /* Nhóm trường nhập liệu */
@@ -53,14 +55,25 @@ body {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
+    color: #555; /* Màu chữ nhạt cho label */
 }
 
-.form-group input, .form-group select {
+.form-group input,
+.form-group select {
     width: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Nhấn vào input và select */
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #fff;
 }
 
 /* Nút Đặt Hàng */
@@ -73,6 +86,7 @@ body {
     color: white;
     cursor: pointer;
     width: 100%;
+    margin-top: 20px;
 }
 
 .submit-btn:hover {
@@ -85,6 +99,23 @@ body {
     padding: 20px;
     border-radius: 10px;
     margin-top: 30px;
+}
+
+.order-summary table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-summary table th,
+.order-summary table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-summary table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
 }
 
 .summary-item {
@@ -102,6 +133,13 @@ body {
     font-weight: bold;
     color: #007bff;
 }
+
+.order-summary h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
 
     </style>
 </head>

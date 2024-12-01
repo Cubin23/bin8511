@@ -1,17 +1,16 @@
 
-<?php 
+<?php
 function viewcart($del) {
     global $img_url;
     $tong = 0; // Tổng tiền giỏ hàng
     $i = 0;
 
-    // Kiểm tra xem giỏ hàng có tồn tại và không rỗng trong session hay không
-    if (empty($_SESSION['mycart'])) {
+    // Kiểm tra xem giỏ hàng có tồn tại trong session hay không
+    if (!isset($_SESSION['mycart']) || empty($_SESSION['mycart'])) {
         echo "<p>Giỏ hàng của bạn hiện tại không có sản phẩm nào.</p>";
-        return; // Nếu giỏ hàng không có sản phẩm, dừng hàm và không hiển thị gì thêm
+        return; // Nếu giỏ hàng không có, dừng việc thực thi hàm
     }
 
-    // Thiết lập các giá trị cho thao tác xóa (nếu có)
     if ($del == 1) {
         $xoasp_th = '<th>Thao Tác</th>';
         $xoasp_td2 = '<td></td>';
@@ -20,7 +19,6 @@ function viewcart($del) {
         $xoasp_td2 = '';
     }
 
-    // Hiển thị tiêu đề bảng giỏ hàng
     echo '  
         <tr>
             <th>Hình</th>
@@ -30,15 +28,14 @@ function viewcart($del) {
             <th>Thành Tiền</th>
             ' . $xoasp_th . '
         </tr>';
-
-    // Duyệt qua các sản phẩm trong giỏ hàng
+    // Kiểm tra và duyệt qua giỏ hàng nếu có
     foreach ($_SESSION['mycart'] as $cart) {
-        // Đường dẫn ảnh sản phẩm
-        $img_url = "/duanmau/upload/" . $cart[0];
-
-        // Tính thành tiền cho mỗi sản phẩm
+        // Tạo đường dẫn ảnh đúng cho từng sản phẩm
+        $hinh = $img_url . $cart[0];  // $cart['img'] là tên ảnh
+        
+        // Tính thành tiền cho từng sản phẩm
         $ttien = $cart[3] * $cart[4];
-        $tong += $ttien; // Cộng dồn tổng tiền
+        $tong += $ttien; // Cộng dồn vào tổng tiền giỏ hàng
 
         // Hiển thị nút xóa nếu del == 1
         if ($del == 1) {
@@ -47,10 +44,10 @@ function viewcart($del) {
             $xoasp_td = '';
         }
 
-        // Hiển thị sản phẩm trong giỏ hàng
+        // Hiển thị thông tin sản phẩm trong giỏ hàng
         echo '
         <tr>
-            <td><img src="' . $img_url . '" alt="Product Image" height="80px"></td>
+            <td><img src="' . $hinh . '" alt="Product Image" height="80px"></td>
             <td>' . $cart[1] . '</td>
             <td>' . number_format($cart[3], 0, ',', '.') . ' VND</td>
             <td>' . $cart[4] . '</td>
