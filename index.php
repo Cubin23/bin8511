@@ -13,6 +13,7 @@ if(!isset($_SESSION['mycart'])) $_SESSION['mycart']=[];
 // Các xử lý khác của trang...
 
 
+
 // Kiểm tra hoạt động của trang
 $spnew = loadall_san_pham_home();
 $dsdm = loadall_danh_muc();
@@ -88,7 +89,15 @@ if (isset($_GET['act']) && $_GET['act'] != "") {
                             $_SESSION['nguoi_dung_id'] = $checkuser['nguoi_dung_id'];   // Lưu ID người dùng
                             $_SESSION['loai_dung_id'] = $checkuser['loai_nguoi_dung'];         // Lưu quyền của người dùng
                 
-                            header('Location: index.php'); // Chuyển hướng về trang chủ
+                            // Kiểm tra quyền của người dùng và chuyển hướng tới trang phù hợp
+                            if ($_SESSION['loai_dung_id'] == 1) {
+                                // Nếu là admin
+                                header('Location: admin'); // Chuyển hướng tới trang admin
+                            } else {
+                                // Nếu là người dùng thường
+                                header('Location: index.php'); // Chuyển hướng tới trang người dùng
+                            }
+                            exit();
                         } else {
                             // Nếu không tìm thấy người dùng
                             $thongbao = "Tài khoản không tồn tại! Vui lòng đăng ký tài khoản.";
@@ -97,12 +106,22 @@ if (isset($_GET['act']) && $_GET['act'] != "") {
                     include "view/taikhoan/dangnhap.php";
                     break;
                 
-                    case 'logout':
-                        session_start();
-                        session_unset();  // Xóa tất cả các session
-                        session_destroy();  // Hủy phiên làm việc
-                        header('Location: index.php');  // Chuyển hướng về trang chủ
-                        break;
+                
+                    case 'logout':  
+                        // Kiểm tra và xóa giỏ hàng khi người dùng đăng xuất
+if (isset($_SESSION['mycart'])) {
+    unset($_SESSION['mycart']); // Xóa giỏ hàng khỏi session
+}
+
+// Xóa thông tin người dùn
+// Khởi tạo session nếu chưa có
+                            session_unset();   // Xóa tất cả các session
+                            session_destroy(); // Hủy phiên làm việc
+                           
+                            
+                            header('Location: index.php?act=dangnhap');  // Chuyển hướng về trang đăng nhập
+                            exit();
+                            break;
                    
                     
                 case 'quenmk':
@@ -172,16 +191,44 @@ if (isset($_GET['act']) && $_GET['act'] != "") {
                             case  'mybill':
                                 include "view/cart/mybill.php";
                                 break;
-                                case  'billcomfirm':
-                                    if(isset($_POST['dathang'])&&($_POST['dathang'])){
-                                        $ho_ten=$_POST['ho_ten'];
-                                        $email=$_POST['email'];
-                                        $dia_chi=$_POST['dia_chi'];
-                                        $sdt=$_POST['sdt'];
-                                        $tongdonhang = tongdonhang();
+                                case 'billcomfirm':
+                                    if (isset($_POST['dathang']) && $_POST['dathang']) {
+                                        $name = trim($_POST['name']);
+                                        $email = trim($_POST['email']);
+                                        $address = trim($_POST['address']);
+                                        $tel = trim($_POST['tel']);
+                                        $pttt = trim($_POST['pttt']);
+                                        $receive_name = isset($_POST['receive_name']) ? $_POST['receive_name'] : ''; // Nếu không có, gán giá trị rỗng
+                                        $receive_address = isset($_POST['receive_address']) ? $_POST['receive_address'] : ''; // Nếu không có, gán giá trị rỗng
+
+                                        $tongdonhang = floatval(tongdonhang());
+                                
+                                        // Kiểm tra dữ liệu
+                                        if (empty($name) || empty($email) || empty($address) || empty($tel) || empty($pttt)) {
+                                            die("Lỗi: Vui lòng điền đầy đủ thông tin.");
+                                        }
+                                
+                                        // Chèn hóa đơn
+                                        $idbill = insert_bill($name, $email, $address, $tel, $pttt, $tongdonhang, $receive_name, $receive_address);
+                                        if (!$idbill) {
+                                            die("Lỗi: Không thể tạo hóa đơn. Vui lòng thử lại.");
+                                        }
+                                
+                                        // Chèn giỏ hàng
+                                        foreach ($_SESSION['mycart'] as $cart) {
+                                            insert_cart($_SESSION['user']['id'], $cart[0], $cart[2], $cart[1], $cart[3], $cart[4], $cart[5], $idbill);
+                                        }
+                                
+                                        // Hiển thị hóa đơn
+                                        $bill = loadone_bill($idbill);
+                                        $billct = loadall_cart($idbill);
+                                        include "view/cart/billcomfirm.php";
+                                    } else {
+                                        die("Lỗi: Không nhận được dữ liệu đặt hàng.");
                                     }
-                                    include "view/cart/billcomfirm.php.";
                                     break;
+                                
+                                
                     
                         
 

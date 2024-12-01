@@ -106,78 +106,66 @@ body {
     </style>
 </head>
 <body>
-    <form action="index.php?act=billcomfirm">
+<form action="index.php?act=billcomfirm" method="POST">
     <div class="order-container">
         <h1 class="order-title">Thông Tin Đặt Hàng</h1>
-
-        <form class="order-form" id="order-form">
-            <div class="form-section">
-                <h2>Thông Tin Cá Nhân</h2>
-
-                <?php 
-                    if(isset($_SESSION['ho_ten'])){
-                        $ho_ten=$_SESSION['ho_ten']['ho_ten'];
-                        $dia_chi=$_SESSION['ho_ten']['dia_chi'];
-                        $email=$_SESSION['ho_ten']['email'];
-                        $sdt=$_SESSION['ho_ten']['sdt'];
-                        
-                    }else{
-                        $name="";
-                        $dia_chi="";
-                        $email="";
-                        $sdt="";
-                        
-                    }
-                
-                
-                
-                ?>
-
-
-
-                <div class="form-group">
-                    <label for="full-name">Họ và Tên:</label>
-                    <input type="text" id="full-name" name="ho_ten" required value="<?=$name?>">
-                </div>
-                <div class="form-group">
-                    <label for="full-name">Địa chỉ:</label>
-                    <input type="text" id="full-name" name="dia_chi" required value="<?=$dia_chi?>">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required value="<?=$email?>">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Số Điện Thoại:</label>
-                    <input type="tel" id="phone" name="sdt" required value="<?=$sdt?>">
-                </div>
+        <div class="form-section">
+            <h2>Thông Tin Cá Nhân</h2>
+            <?php 
+                if (isset($_SESSION['ho_ten'])) {
+                    $name = $_SESSION['ho_ten']['ho_ten'];
+                    $address = $_SESSION['ho_ten']['dia_chi'];
+                    $email = $_SESSION['ho_ten']['email'];
+                    $tel = $_SESSION['ho_ten']['sdt'];
+                } else {
+                    $name = "";
+                    $address = "";
+                    $email = "";
+                    $tel = "";
+                }
+            ?>
+            <div class="form-group">
+                <label for="full-name">Họ và Tên:</label>
+                <input type="text" id="full-name" name="name" required value="<?= $name ?>">
             </div>
-
-
-            <div class="form-section">
-                <h2>Phương Thức Thanh Toán</h2>
-                <div class="form-group">
-                    <label for="payment-method">Chọn Phương Thức Thanh Toán:</label>
-                    <select id="payment-method" name="payment-method" required>
-                        <option value="cash-on-delivery">Thanh Toán Khi Nhận Hàng</option>
-                        <option value="bank-transfer">Chuyển Khoản Ngân Hàng</option>
-                        <option value="online-payment">Thanh Toán Online</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label for="address">Địa chỉ:</label>
+                <input type="text" id="address" name="address" required value="<?= $address ?>">
             </div>
-
-            <div class="order-summary">
-                <h2>Tóm Tắt Đơn Hàng</h2>
-                <div>
-                    <table>
-                        
-                        <?php viewcart(0); ?>
-                    </table>
-                </div>
-                <button type="submit" class="submit-btn" name="dathang">Đặt Hàng</button>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required value="<?= $email ?>">
             </div>
-        </form>
+            <div class="form-group">
+                <label for="phone">Số Điện Thoại:</label>
+                <input type="tel" id="phone" name="tel" required value="<?= $tel ?>">
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Phương Thức Thanh Toán</h2>
+            <div class="form-group">
+                <label for="payment-method">Chọn Phương Thức Thanh Toán:</label>
+                <select id="payment-method" name="pttt" required>
+    <option value="cash-on-delivery">Thanh Toán Khi Nhận Hàng</option>
+    <option value="bank-transfer">Chuyển Khoản Ngân Hàng</option>
+    <option value="online-payment">Thanh Toán Online</option>
+</select>
+
+            </div>
+        </div>
+
+        <div class="order-summary">
+            <h2>Tóm Tắt Đơn Hàng</h2>
+            <div>
+                <table>
+                    <?php viewcart(0); ?>
+                </table>
+            </div>
+            <button type="submit" class="submit-btn" name="dathang" value="1">Đặt Hàng</button>
+        </div>
     </div>
-    </form>
+</form>
+
 </body>
 </html>

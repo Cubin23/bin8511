@@ -2,9 +2,6 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();  // Khởi tạo session nếu chưa có session nào được bắt đầu
 }
-
-// Kiểm tra xem người dùng đã đăng nhập chưa
-$isLoggedIn = isset($_SESSION['username']);
 ?>
 
 <!DOCTYPE html>
@@ -118,15 +115,25 @@ $isLoggedIn = isset($_SESSION['username']);
     <div class="logo">
       <img src="view/img/z5997923336813_0615e09e211f5c43c27c0838175e2e29.jpg" alt="Tiny Garden Logo" width="150">
     </div>
+
+    <div class="cart">
+    <a href="index.php?act=viewcart"><i class="fas fa-shopping-cart"></i> Thành tiền: <?php echo number_format(tongdonhang(), 0, ',', '.'); ?> VND</a>
+
     <?php
-$isLoggedIn = isset($_SESSION['username']);
-$isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+// Nếu người dùng đã đăng nhập, hiển thị nút đăng xuất
+if (isset($_SESSION['username'])) {
+    echo "<p>Xin chào, " . $_SESSION['username'] . "!</p>";
+    echo '<a href="index.php?act=logout" class="logout-btn">Đăng xuất</a>';
+} else {
+   echo'<a href="index.php?act=dangky"><i class="fas fa-user"></i> Đăng ký</a>
+      <a href="index.php?act=dangnhap"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>';
+}
 ?>
 
-<div class="cart">
-      <a href="index.php?act=viewcart"><i class="fas fa-shopping-cart"></i> Thành tiền: 0 VND</a>
-      <a href="index.php?act=dangky"><i class="fas fa-user"></i> Đăng ký</a>
-      <a href="index.php?act=dangnhap"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+</div>
+
+
+
     </div>
 
   </div>

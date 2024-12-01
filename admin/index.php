@@ -179,6 +179,18 @@ case 'addsp':
                             }
                             header("Location: index.php?act=dskh");
                             exit;
+
+                            case 'logout':
+                                // Xóa tất cả session
+                                session_unset();
+                        
+                                // Hủy phiên làm việc
+                                session_destroy();
+                        
+                                // Chuyển hướng về trang chủ
+                                header('Location: http://localhost/duanmau/index.php');
+                                exit();
+                                break;
                 
         default:
         include "home.php";

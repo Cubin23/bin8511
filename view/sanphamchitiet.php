@@ -167,6 +167,36 @@
 .products li a:hover {
     color: #007bff;
 }
+/* Nút "Thêm vào giỏ hàng" */
+.add-to-cart button {
+    padding: 15px 25px; /* Kích thước nút */
+    font-size: 18px; /* Kích thước chữ */
+    color: #fff; /* Màu chữ */
+    background-color: #007bff; /* Màu nền */
+    border: none; /* Bỏ viền */
+    border-radius: 8px; /* Bo góc cho nút */
+    cursor: pointer; /* Con trỏ chuột khi hover vào */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Hiệu ứng chuyển đổi */
+}
+
+/* Hiệu ứng khi hover vào nút */
+.add-to-cart button:hover {
+    background-color: #0056b3; /* Màu nền khi hover */
+    transform: translateY(-2px); /* Nâng nút lên khi hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ khi hover */
+}
+
+/* Hiệu ứng khi nhấn vào nút */
+.add-to-cart button:active {
+    transform: translateY(0); /* Quay lại vị trí ban đầu khi nhấn */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Giảm bóng khi nhấn */
+}
+
+/* Thêm hiệu ứng focus cho nút */
+.add-to-cart button:focus {
+    outline: none; /* Bỏ outline khi chọn */
+    border: 2px solid #007bff; /* Thêm viền khi focus */
+}
 
 </style>
 
@@ -193,7 +223,17 @@
             <p><?= nl2br(htmlspecialchars($gia))?> VNĐ</p>
                 <div class="add-to-cart">
                 <input type="number" min="1" value="1"> <!-- Ô nhập số lượng -->
-                <a href="index.php?act=viewcart"><button>Thêm vào giỏ hàng</button></a>
+
+                <?php echo'<form action="index.php?act=addtocart" method="post">
+                <input type="hidden" name = "anh_url" value="'.$anh_url.'">
+                <input type="hidden" name = "ten_san_pham" value="'.$ten_san_pham.'"> 
+                <input type="hidden" name = "san_pham_id" value="'.$san_pham_id.'"> 
+
+         
+                <input type="hidden" name = "gia" value="'.$gia.'"> 
+                <input type="submit" name="addtocart" value="Thêm vào giỏ hàng" class="btn-icon-only">
+                </form>' ;?>
+                
             </div>
 
         </div>

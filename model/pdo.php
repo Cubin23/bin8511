@@ -25,6 +25,20 @@ function pdo_execute($sql, $params = []) {
         return false;
     }
 }
+function pdo_execute_return_lastInsertId($sql, ...$params) {
+    try {
+        $conn = pdo_get_connection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params); // Thực thi tham số an toàn
+        return $conn->lastInsertId(); // Lấy ID vừa chèn
+    } catch (PDOException $e) {
+        echo "Lỗi: " . $e->getMessage(); // Hiển thị lỗi
+        return false;
+    } finally {
+        unset($conn); // Giải phóng kết nối
+    }
+}
+
 
 
 /** 
