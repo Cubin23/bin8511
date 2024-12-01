@@ -1,3 +1,10 @@
+<?php
+
+
+// Gọi hàm load_all_comments để lấy danh sách bình luận
+$list_comments = load_all_comments();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
