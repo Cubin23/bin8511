@@ -2,8 +2,9 @@
 // Hàm thêm mới bình luận
 // Hàm thêm bình luận
 function insert_comment($san_pham_id, $noi_dung, $nguoi_dung_id, $ngaybinhluan) {
-    $sql = "INSERT INTO binh_luan (san_pham_id, noi_dung, nguoi_dung_id, created_at) VALUES (?, ?, ?, ?)";
-    pdo_execute($sql, $san_pham_id, $noi_dung, $nguoi_dung_id, $ngaybinhluan);
+    $sql = "INSERT INTO binh_luan (san_pham_id, noi_dung, nguoi_dung_id, created_at)
+            VALUES (?, ?, ?, ?)";
+    pdo_execute($sql, [$san_pham_id, $noi_dung, $nguoi_dung_id, $ngaybinhluan]);
 }
 
 // Hàm lấy danh sách bình luận
@@ -25,8 +26,9 @@ function load_comments_by_product($san_pham_id) {
             LEFT JOIN san_pham sp ON bl.san_pham_id = sp.san_pham_id
             WHERE bl.san_pham_id = ?
             ORDER BY bl.created_at DESC";
-    return pdo_query($sql, $san_pham_id);
+    return pdo_query($sql, [$san_pham_id]); // Đảm bảo truyền một mảng thay vì giá trị đơn
 }
+
 
 // Hàm xóa bình luận
 function delete_comment($binh_luan_id) {
