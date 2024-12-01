@@ -24,6 +24,6 @@
             <li><a href="index.php?act=addsp">SẢN PHẨM</a></li>
             <li><a href="index.php?act=dskh">KHÁCH HÀNG</a></li>
             <li><a href="index.php?act=dsbl">BÌNH LUẬN</a></li>
-            <li><a href="index.php?act=thongke">THỐNG KÊ</a></li>
+            <li><a href="index.php?act=listthongke">THỐNG KÊ</a></li>
           </ul>
         </div>
