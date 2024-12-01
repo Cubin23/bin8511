@@ -124,18 +124,10 @@ $isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 ?>
 
 <div class="cart">
-    <?php if ($isLoggedIn): ?>
-        <span>Xin chào, <?= htmlspecialchars($_SESSION['username']); ?>!</span>
-        <?php if ($isAdmin): ?>
-            <!-- Hiển thị liên kết quản trị -->
-            <a href="admin.php"><i class="fas fa-cogs"></i> Quản trị</a>
-        <?php endif; ?>
-        <a href="index.php?act=logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
-    <?php else: ?>
-        <a href="index.php?act=dangky"><i class="fas fa-user"></i> Đăng ký</a>
-        <a href="index.php?act=dangnhap"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
-    <?php endif; ?>
-</div>
+      <a href="index.php?act=viewcart"><i class="fas fa-shopping-cart"></i> Thành tiền: 0 VND</a>
+      <a href="index.php?act=dangky"><i class="fas fa-user"></i> Đăng ký</a>
+      <a href="index.php?act=dangnhap"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+    </div>
 
   </div>
 

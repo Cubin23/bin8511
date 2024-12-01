@@ -79,10 +79,11 @@ foreach ($spnew as $sp) {
         <p>' . $gia . ' VNĐ || </p></a>
         
         <form action="index.php?act=addtocart" method="post">
-
-        <input type="hidden" name = "san_pham_id" value="'.$san_pham_id.'"> 
+<input type="hidden" name = "anh_url" value="'.$anh_url.'">
         <input type="hidden" name = "ten_san_pham" value="'.$ten_san_pham.'"> 
-        <input type="hidden" name = "anh_url" value="'.$anh_url.'"> 
+        <input type="hidden" name = "san_pham_id" value="'.$san_pham_id.'"> 
+
+         
         <input type="hidden" name = "gia" value="'.$gia.'"> 
         <input type="submit" name="addtocart" value="Thêm vào giỏ hàng" class="btn-icon-only">
 

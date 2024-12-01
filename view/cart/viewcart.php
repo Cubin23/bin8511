@@ -8,9 +8,9 @@
         /* Tổng thể */
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
 }
 
 /* Container chính cho giỏ hàng */
@@ -57,7 +57,6 @@ body {
 .cart-item-info {
     display: flex;
     align-items: center;
-    justify-content: start;
     gap: 10px;
 }
 
@@ -179,116 +178,27 @@ button {
 </head>
 <body>
     <div class="cart-container">
-        <!-- Tiêu đề Giỏ Hàng -->
         <h1 class="cart-title">Giỏ Hàng Của Bạn</h1>
-        
+
         <!-- Bảng Giỏ Hàng -->
         <table class="cart-table">
-            <thead>
-                <tr>
-                    <th>Sản Phẩm</th>
-                    <th>Giá</th>
-                    <th>Thành Tiền</th>
-                    <th>Số Lượng</th>
-                    <th>Hành Động</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-if (!isset($_SESSION['mycart']) || empty($_SESSION['mycart'])) {
-    echo "<tr><td colspan='5'>Giỏ hàng của bạn đang trống!</td></tr>";
-} else {
-    $tong = 0; // Tổng tiền giỏ hàng
-    foreach ($_SESSION['mycart'] as $sp) {
-        $san_pham_id = $sp[0];
-        $anh_urlpath = !empty($sp[1]) ? $sp[1] : 'view/img/default.jpg'; // Đường dẫn ảnh
-        $ten_san_pham = $sp[2];
-        $gia = $sp[3];
-        $soluong = $sp[4];
-        $ttien = $gia * $soluong;
-        $tong += $ttien; // Cộng vào tổng tiền
-
-        // Hiển thị từng sản phẩm
-        echo "
-        <tr class='cart-item'>
-            <td>
-                <div class='cart-item-info'>
-                    <img src='" . htmlspecialchars($anh_urlpath) . "' alt='" . htmlspecialchars($ten_san_pham) . "'>
-                    <span>" . htmlspecialchars($ten_san_pham) . "</span>
-                </div>
-            </td>
-            <td class='cart-price'>" . number_format($gia, 0, ',', '.') . " VNĐ</td>
-            <td class='cart-total'>" . number_format($ttien, 0, ',', '.') . " VNĐ</td>
-            <td>
-                <input type='number' class='cart-quantity' value='$soluong' min='1' data-id='$san_pham_id'>
-            </td>
-            <td>
-                <button class='remove-item' data-id='$san_pham_id'>Xóa</button>
-            </td>
-        </tr>";
-    }
-    echo "<script>document.querySelector('.cart-total-summary').textContent = '" . number_format($tong, 0, ',', '.') . " VNĐ';</script>";
-}
-?>
-
-            </tbody>
+            
+            <?php  viewcart(1); ?>
+           
+            
+            
         </table>
 
         <!-- Tóm tắt giỏ hàng -->
         <div class="cart-summary">
-            <div class="cart-summary-item">
-                <span>Tổng Tiền:</span>
-                <span class="cart-total-summary">0 VNĐ</span>
-            </div>
+
             <div class="cart-summary-item">
                 <button class="update-cart">Cập Nhật Giỏ Hàng</button>
             </div>
             <div class="cart-summary-item">
-                <button class="checkout-btn">Thanh Toán</button>
+                <a href="index.php?act=bill"><button class="checkout-btn">Thanh Toán</button></a>
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const updateCartBtn = document.querySelector('.update-cart');
-            const cartTotalSummary = document.querySelector('.cart-total-summary');
-
-            function updateCartTotal() {
-                let total = 0;
-                document.querySelectorAll('.cart-item').forEach(item => {
-                    const price = parseInt(item.querySelector('.cart-price').textContent.replace(/\D/g, ''));
-                    const quantity = parseInt(item.querySelector('.cart-quantity').value);
-                    const itemTotal = price * quantity;
-
-                    item.querySelector('.cart-total').textContent = itemTotal.toLocaleString('vi-VN') + ' VNĐ';
-                    total += itemTotal;
-                });
-                cartTotalSummary.textContent = total.toLocaleString('vi-VN') + ' VNĐ';
-            }
-
-            // Xóa sản phẩm
-            document.querySelectorAll('.remove-item').forEach(button => {
-                button.addEventListener('click', function() {
-                    const itemId = this.getAttribute('data-id');
-                    this.closest('.cart-item').remove();
-                    updateCartTotal();
-                    // Gửi yêu cầu xóa sản phẩm đến server nếu cần
-                });
-            });
-
-            // Cập nhật tổng tiền khi thay đổi số lượng
-            document.querySelectorAll('.cart-quantity').forEach(input => {
-                input.addEventListener('input', updateCartTotal);
-            });
-
-            // Cập nhật giỏ hàng (có thể gửi dữ liệu mới về server tại đây)
-            updateCartBtn.addEventListener('click', function() {
-                alert("Giỏ hàng đã được cập nhật!");
-            });
-
-            // Khởi tạo tổng tiền ban đầu
-            updateCartTotal();
-        });
-    </script>
 </body>
 </html>

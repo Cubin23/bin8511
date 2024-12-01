@@ -1,3 +1,3 @@
 <?php
-$img_path= "upload/" 
+$img_path= "DA1/upload/" 
 ?>

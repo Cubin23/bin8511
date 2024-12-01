@@ -193,7 +193,7 @@
             <p><?= nl2br(htmlspecialchars($gia))?> VNĐ</p>
                 <div class="add-to-cart">
                 <input type="number" min="1" value="1"> <!-- Ô nhập số lượng -->
-                <button>Thêm vào giỏ hàng</button>
+                <a href="index.php?act=viewcart"><button>Thêm vào giỏ hàng</button></a>
             </div>
 
         </div>

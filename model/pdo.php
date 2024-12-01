@@ -19,13 +19,13 @@ function pdo_execute($sql, $params = []) {
         $conn = pdo_get_connection();
         $stmt = $conn->prepare($sql);
         $stmt->execute($params);
-        return $stmt->rowCount() > 0;
+        return $stmt->rowCount() > 0;  // Trả về true nếu có dòng bị ảnh hưởng
     } catch (PDOException $e) {
-        // Nếu có lỗi trong SQL hoặc kết nối, in ra lỗi và trả về false
-        echo "Lỗi: " . $e->getMessage();
+        echo "Lỗi: " . $e->getMessage();  // Hiển thị lỗi nếu có
         return false;
     }
 }
+
 
 /** 
  * thực thi câu lệnh sql thao tác dữ liêu(INSERT, UPDATE, DELETE)
@@ -63,17 +63,15 @@ function pdo_query_one($sql, $params = []) {
         $conn = pdo_get_connection();
         $stmt = $conn->prepare($sql);
         $stmt->execute($params);
-        
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);  // Fetch only one row as an associative array
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);  // Lấy một bản ghi dưới dạng mảng liên kết
         return $row;
-    }
-    catch (PDOException $e) {
+    } catch (PDOException $e) {
         throw $e;
-    }
-    finally {
+    } finally {
         unset($conn);
     }
 }
+
 
 /** 
  * thực thi câu lệnh sql thao tác dữ liêu(INSERT, UPDATE, DELETE)
@@ -87,17 +85,15 @@ function pdo_query_value($sql, $params = []) {
         $conn = pdo_get_connection();
         $stmt = $conn->prepare($sql);
         $stmt->execute($params);
-        
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? array_values($row)[0] : null;  // Return the first value or null if no result
-    }
-    catch (PDOException $e) {
+        return $row ? array_values($row)[0] : null;  // Trả về giá trị đầu tiên hoặc null
+    } catch (PDOException $e) {
         throw $e;
-    }
-    finally {
+    } finally {
         unset($conn);
     }
 }
+
 
 
 

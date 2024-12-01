@@ -4,11 +4,12 @@ include "model/pdo.php";
 include "model/sanpham.php";
 include "model/danhmuc.php";
 include "model/taikhoan.php";
+include "model/cart.php";
 include "view/header.php";
 include "global.php";
 
 
-if(!isset($_SESSIO['mycart'])) $_SESSION['mycart']=[];
+if(!isset($_SESSION['mycart'])) $_SESSION['mycart']=[];
 // Các xử lý khác của trang...
 
 
@@ -82,10 +83,12 @@ if (isset($_GET['act']) && $_GET['act'] != "") {
                         $checkuser = checkuser($username, $password);
                 
                         if (is_array($checkuser)) {
-                            // Lưu tên người dùng vào session sau khi đăng nhập thành công
-                           // Giả sử bảng có 'user_id'
-                            $_SESSION['username'] = $checkuser['username'];  // Lưu tên người dùng
-                            header('Location: index.php');  // Chuyển hướng về trang chủ
+                            // Lưu thông tin người dùng vào session sau khi đăng nhập thành công
+                            $_SESSION['username'] = $checkuser['username']; // Lưu tên người dùng
+                            $_SESSION['nguoi_dung_id'] = $checkuser['nguoi_dung_id'];   // Lưu ID người dùng
+                            $_SESSION['loai_dung_id'] = $checkuser['loai_nguoi_dung'];         // Lưu quyền của người dùng
+                
+                            header('Location: index.php'); // Chuyển hướng về trang chủ
                         } else {
                             // Nếu không tìm thấy người dùng
                             $thongbao = "Tài khoản không tồn tại! Vui lòng đăng ký tài khoản.";
@@ -93,6 +96,7 @@ if (isset($_GET['act']) && $_GET['act'] != "") {
                     }
                     include "view/taikhoan/dangnhap.php";
                     break;
+                
                     case 'logout':
                         session_start();
                         session_unset();  // Xóa tất cả các session
@@ -133,24 +137,54 @@ if (isset($_GET['act']) && $_GET['act'] != "") {
                 case 'chamsoccaycanh':
                     include "view/chamsoccaycanh.php";
                     break;
-                case 'addtocart':
-                    if(isset($_POST['addtocart'])&&($_POST['addtocart'])){
-                        $san_pham_id = $_POST['san_pham_id'];
-                        $ten_san_pham = $_POST['ten_san_pham'];
-                        $anh_url = $_POST['anh_url'];
-                        $gia = $_POST['gia'];
-                        $soluong=1;
-                        $ttien=$soluong*$gia;
-                        $spadd=[$san_pham_id,$anh_url,$ten_san_pham,$gia,$soluong];
-                        array_push($_SESSION['mycart'],$spadd);
+                    case 'addtocart':
+                        if(isset($_POST['addtocart'])&&($_POST['addtocart'])){
+                            $san_pham_id = $_POST['san_pham_id'];
+                            $ten_san_pham = $_POST['ten_san_pham'];
+                            $anh_url = $_POST['anh_url'];
+                            $gia = $_POST['gia'];
+                            $soluong=1;
+                            $ttien=$soluong*$gia;
+                            $spadd=[$anh_url,$ten_san_pham,$san_pham_id,$gia,$soluong];
+                            array_push($_SESSION['mycart'],$spadd);
+                        
+                        
+                        }
+                        include "view/cart/viewcart.php";
+                        break;
+                        case 'delcart':
+                            if (isset($_GET['idcart'])) {
+                                $idcart = $_GET['idcart'];  // Lấy id của sản phẩm cần xóa
+                                unset($_SESSION['mycart'][$idcart]);  // Xóa sản phẩm tại vị trí $idcart
+                                $_SESSION['mycart'] = array_values($_SESSION['mycart']);  // Đảm bảo các chỉ số mảng được cập nhật lại liên tục
+                            } else {
+                                $_SESSION['mycart'] = [];  // Xóa tất cả sản phẩm trong giỏ
+                            }
+                            header('Location: index.php?act=viewcart');  // Chuyển hướng về giỏ hàng
+                            break;
+                        
+                    case  'viewcart':
+                        include "view/cart/viewcart.php";
+                        break;
+                        case  'bill':
+                            include "view/cart/bill.php";
+                            break;
+                            case  'mybill':
+                                include "view/cart/mybill.php";
+                                break;
+                                case  'billcomfirm':
+                                    if(isset($_POST['dathang'])&&($_POST['dathang'])){
+                                        $ho_ten=$_POST['ho_ten'];
+                                        $email=$_POST['email'];
+                                        $dia_chi=$_POST['dia_chi'];
+                                        $sdt=$_POST['sdt'];
+                                        $tongdonhang = tongdonhang();
+                                    }
+                                    include "view/cart/billcomfirm.php.";
+                                    break;
                     
-                    
-                    }
-                    include "view/cart/viewcart.php";
-                    break;
-                case  'viewcart':
-                    include "view/cart/viewcart.php";
-                    break;
+                        
+
         default:
 
             break;
