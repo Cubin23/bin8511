@@ -7,6 +7,7 @@ $list_comments = load_all_comments();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -123,6 +124,7 @@ $list_comments = load_all_comments();
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="row fretitle">
@@ -144,23 +146,24 @@ $list_comments = load_all_comments();
                     <tbody>
                         <?php foreach ($list_comments as $comment): ?>
                             <tr>
-                                <td><?= $comment['binh_luan_id'] ?></td>
-                                <td><?= htmlspecialchars($comment['noi_dung']) ?></td>
-                                <td><?= htmlspecialchars($comment['nguoi_dung']) ?></td>
+                                <td><?= htmlspecialchars($comment['binh_luan_id'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($comment['noi_dung'] ?? 'Nội dung không xác định') ?></td>
+                                <td><?= htmlspecialchars($comment['nguoi_dung'] ?? 'Người dùng ẩn danh') ?></td>
                                 <td>
-                                    <a href="index.php?act=binhluan_by_sp&san_pham_id=<?= $comment['san_pham_id'] ?>">
-                                        <?= htmlspecialchars($comment['ten_san_pham']) ?>
+                                    <a href="index.php?act=binhluan_by_sp&san_pham_id=<?= htmlspecialchars($comment['san_pham_id'] ?? 0) ?>">
+                                        <?= htmlspecialchars($comment['ten_san_pham'] ?? 'Sản phẩm không xác định') ?>
                                     </a>
                                 </td>
-                                <td><?= $comment['created_at'] ?></td>
+                                <td><?= htmlspecialchars($comment['created_at'] ?? 'Không rõ ngày') ?></td>
                                 <td>
-                                    <a href="index.php?act=delete_binhluan&binh_luan_id=<?= $comment['binh_luan_id'] ?>" 
-                                       onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                                    <a href="index.php?act=delete_binhluan&binh_luan_id=<?= htmlspecialchars($comment['binh_luan_id'] ?? 0) ?>"
+                                        onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
                                         <button class="btn btn-danger">Xóa</button>
                                     </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
+
                     </tbody>
                 </table>
             <?php else: ?>
@@ -169,4 +172,5 @@ $list_comments = load_all_comments();
         </div>
     </div>
 </body>
+
 </html>

@@ -321,19 +321,19 @@
                 </li>
                 <hr>
             <?php endforeach; ?>
-
         </ul>
     <?php else: ?>
         <p>Chưa có bình luận nào.</p>
     <?php endif; ?>
 </div>
 
+
 <!-- Form gửi bình luận -->
 <div class="add-comment">
     <h2>Thêm bình luận</h2>
     <?php if (isset($_SESSION['username'])): ?>
         <form action="index.php?act=add_comment" method="post">
-            <input type="hidden" name="san_pham_id" value="<?= htmlspecialchars($san_pham_id) ?>">
+            <input type="hidden" name="san_pham_id" value="<?= htmlspecialchars($san_pham_id ?? 0) ?>">
             <textarea name="noi_dung" rows="4" placeholder="Nhập nội dung bình luận..." required></textarea>
             <button type="submit">Gửi bình luận</button>
         </form>
@@ -341,6 +341,7 @@
         <p>Vui lòng <a href="index.php?act=dangnhap">đăng nhập</a> để bình luận.</p>
     <?php endif; ?>
 </div>
+
 
 
 
