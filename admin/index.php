@@ -155,20 +155,21 @@ case 'addsp':
                             break;
                 
                             case 'viewkh':
-                                if (isset($_GET['nguoi_dung_id']) && is_numeric($_GET['nguoi_dung_id'])) {
-                                    $id = intval($_GET['nguoi_dung_id']);  // Chuyển ID thành số nguyên
-                                    $customer = load_customer_by_id($id);  // Thay $nguoi_dung_id bằng $id
-                                    
+                                if (isset($_GET['id'])) {
+                                    $id = intval($_GET['id']);
+                                    $customer = load_customer_by_id($id);
+                    
                                     if (!$customer) {
                                         echo "Không tìm thấy khách hàng.";
                                         exit;
                                     }
-                                    
-                                    include "khachhang/view.php";  // Hiển thị thông tin khách hàng
+                    
+                                    include "khachhang/view.php";
                                 } else {
                                     echo "ID khách hàng không hợp lệ.";
                                 }
                                 break;
+                    
                             
                 
                 

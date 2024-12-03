@@ -103,7 +103,9 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 </style>
-<?php $dsdm=loadall_danh_muc(); ?>
+<?php 
+$num = isset($num) ? $num : 0;
+$dsdm=loadall_danh_muc(); ?>
 </head>
 <body>
   <!-- Header Section -->

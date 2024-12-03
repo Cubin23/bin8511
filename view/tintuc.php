@@ -162,7 +162,7 @@
         <div class="articles">
             <!-- Bài viết 1 -->
             <div class="article">
-                <img src="view/image/93_2.jpg" alt="Cây sen đá" class="article-img">
+                <img src="view/img/93_2.jpg" alt="Cây sen đá" class="article-img">
                 <div class="article-content">
                     <h2 class="article-title">Cây Cảnh là lựa chọn hàng đầu cho việc trang trí</h2>
                     <p class="article-description">Cây sen đá là loại cây dễ chăm sóc và rất thích hợp để trồng trong nhà. Cây có thể sống tốt mà không cần nhiều ánh sáng, giúp không gian thêm xanh mát. Hãy tìm hiểu về các bước chăm sóc để cây luôn phát triển khỏe mạnh.</p>
@@ -172,7 +172,7 @@
 
             <!-- Bài viết 2 -->
             <div class="article">
-                <img src="view/image/91_2.jpg" alt="Cây bonsai" class="article-img">
+                <img src="view/img/91_2.jpg" alt="Cây bonsai" class="article-img">
                 <div class="article-content">
                     <h2 class="article-title">Cây Cảnh giúp môi trường xanh</h2>
                     <p class="article-description">Cây bonsai không chỉ là cây cảnh mà còn là một nghệ thuật. Việc tạo dáng cho cây bonsai đòi hỏi sự tỉ mỉ và kiên nhẫn. Hãy khám phá các kỹ thuật và bí quyết tạo dáng để có một cây bonsai đẹp và ấn tượng.</p>
@@ -182,7 +182,7 @@
 
             <!-- Bài viết 3 -->
             <div class="article">
-                <img src="view/image/90_2.jpg" alt="Cây phong thủy" class="article-img">
+                <img src="view/img/90_2.jpg" alt="Cây phong thủy" class="article-img">
                 <div class="article-content">
                     <h2 class="article-title">Ý nghĩa cây phong thủy</h2>
                     <p class="article-description">Cây phong thủy không chỉ giúp trang trí không gian mà còn mang lại tài lộc và may mắn. Cùng tìm hiểu những loại cây phong thủy phổ biến và cách lựa chọn chúng sao cho phù hợp với không gian sống của bạn.</p>

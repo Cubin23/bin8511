@@ -68,17 +68,19 @@ function viewcart($del) {
 
 
 function tongdonhang(){
-   
+    $num = isset($num) ? $num : 0;
     $tong = 0;
-    foreach ($_SESSION['mycart'] as $cart) {
+    if (isset($_SESSION['mycart']) && is_array($_SESSION['mycart'])) {
+        foreach ($_SESSION['mycart'] as $cart) {
 
       
     
         $ttien = $cart[3] * $cart[4];
         $tong+= $ttien;
     }
+}
     return $tong;
-
+    
 }
 
 

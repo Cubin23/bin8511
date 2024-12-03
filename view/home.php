@@ -144,7 +144,7 @@ foreach ($dstop10 as $sp) {
         <p>' . $ten_san_pham . '</p>
         <p>' . $gia . ' VNĐ || <a href="index.php?act=viewcart"><i class="fas fa-shopping-cart"></a></i></p> </a>
         <form action="index.php?act=addtocart" method="post">
-<input type="hidden" name = "anh_url" value="'.$anh_url.'">
+        <input type="hidden" name = "anh_url" value="'.$anh_url.'">
         <input type="hidden" name = "ten_san_pham" value="'.$ten_san_pham.'"> 
         <input type="hidden" name = "san_pham_id" value="'.$san_pham_id.'"> 
 
