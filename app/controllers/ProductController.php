@@ -87,7 +87,8 @@ class ProductController
             if (is_array($result)) {
                 // Có lỗi, hiển thị lại form với thông báo lỗi
                 $errors = $result;
-                include 'app/views/product/add.php';
+                include_once 'app/views/product/addproduct.php';
+;
             } else {
                 // Không có lỗi, chuyển hướng ve trang chu hoac trang danh sach
                 header('Location: /chieu2/admin/listProducts');

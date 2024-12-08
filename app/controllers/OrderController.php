@@ -56,5 +56,21 @@ class OrderController
        $totalPriceOrder = $this->orderModel->totalPriceOrder();
         include_once 'app/views/admin/report.php';
     }
-   
+    public function updateStatus()
+    {
+        if (isset($_POST['orderId']) && isset($_POST['trangThai'])) {
+            $orderId = intval($_POST['orderId']);
+            $trangThai = htmlspecialchars($_POST['trangThai']);
+    
+            if ($this->orderModel->updateOrderStatus($orderId, $trangThai)) {
+                echo json_encode(['success' => true, 'message' => 'Cập nhật trạng thái thành công.']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Cập nhật trạng thái thất bại.']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ.']);
+        }
+        exit();
+    }
+    
 }

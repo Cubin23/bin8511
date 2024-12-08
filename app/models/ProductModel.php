@@ -1,35 +1,41 @@
 <?php
-class ProductModel {
+class ProductModel
+{
     private $conn;
     private $table_name = "products";
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
-    function readAll() {
+    function readAll()
+    {
         $query = "SELECT p.*, c.name as category FROM " . $this->table_name . " as p JOIN demo.categories c ON p.category_id = c.id";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
     }
-    
-    function getProductByCategory($idCategory) {
+
+    function getProductByCategory($idCategory)
+    {
         $query = "SELECT p.*, c.name as category FROM " . $this->table_name . " as p JOIN demo.categories c ON p.category_id = c.id WHERE category_id = $idCategory";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-    
+
         return $stmt;
     }
-    function getProductsByName($name) {
+    function getProductsByName($name)
+    {
         $query = "SELECT p.*, c.name as category FROM " . $this->table_name . " as p JOIN demo.categories c ON p.category_id = c.id WHERE p.name  LIKE '%$name%'";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-    
+
         return $stmt;
     }
-    function getProducBestseller() {
+    function getProducBestseller()
+    {
         $query = "SELECT p.*, c.name AS category
                   FROM " . $this->table_name . " AS p
                   JOIN demo.orderdetails d ON p.id = d.productID 
@@ -41,27 +47,34 @@ class ProductModel {
         $stmt->execute();
         return $stmt;
     }
-    function deleteProductById($productId) {
-        // Chuẩn bị câu truy vấn xoá
-        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
-        
-        // Chuẩn bị và thực thi câu truy vấn
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $productId, PDO::PARAM_INT); // Liên kết tham số với giá trị
-        
-        // Thực thi câu truy vấn
-        $stmt->execute();
-        
-        // Kiểm tra và trả về kết quả
-        if ($stmt->rowCount() > 0) {
-            return true; // Nếu có sản phẩm bị xoá thành công
-        } else {
-            return false; // Nếu không có sản phẩm nào được xoá
+    function deleteProductById($productId)
+    {
+        try {
+            // Xóa dữ liệu liên quan trong reviews
+            $query = "DELETE FROM reviews WHERE product_id = :productId";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":productId", $productId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Xóa dữ liệu liên quan trong orderdetails
+            $query = "DELETE FROM orderdetails WHERE productID = :productId";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":productId", $productId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Xóa sản phẩm
+            $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":id", $productId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            throw new Exception("Error deleting product: " . $e->getMessage());
         }
     }
-    
-    
-    function createProduct($name, $description, $price, $uploadResult,$category_id)
+
+    function createProduct($name, $description, $price, $uploadResult, $category_id)
     {
         // uploadResult: đường dẫn của file hình 
         // uploadResult = false: lỗi upload hình ảnh
@@ -109,7 +122,8 @@ class ProductModel {
         return false;
     }
 
-    function getProductById($id){
+    function getProductById($id)
+    {
 
         $query = "SELECT * FROM " . $this->table_name . " where id = $id";
 
@@ -118,11 +132,12 @@ class ProductModel {
         $result = $stmt->fetch(PDO::FETCH_OBJ);
         return $result;
     }
-  
-    
-    
-    
-    function updateProduct($id, $name, $description, $price, $uploadResult,$category_id){
+
+
+
+
+    function updateProduct($id, $name, $description, $price, $uploadResult, $category_id)
+    {
 
         if ($uploadResult) {
             $query = "UPDATE " . $this->table_name . " SET name=:name, description=:description, price=:price, image=:image,category_id=:category_id WHERE id=:id";
@@ -140,7 +155,7 @@ class ProductModel {
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':price', $price);
-        if($uploadResult){
+        if ($uploadResult) {
             $stmt->bindParam(':image', $uploadResult);
         }
         $stmt->bindParam(':category_id', $category_id);

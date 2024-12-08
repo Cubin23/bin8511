@@ -98,10 +98,19 @@ class AccountController{
     }
 
     function logout(){
-        
-        unset($_SESSION['username']);
-        unset($_SESSION['role']);
+        // Hủy bỏ tất cả các biến session
+        session_unset();
+        session_destroy();
 
         header('Location: /chieu2');
+    }
+
+    private function redirectBasedOnRole() {
+        if ($_SESSION['role'] == 'admin') {
+            header('Location: /chieu2/admin/listProducts');
+        } else {
+            header('Location: /chieu2');
+        }
+        exit();
     }
 }

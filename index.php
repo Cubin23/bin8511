@@ -1,39 +1,73 @@
 <?php
-require_once 'config/database.php';
-require_once 'app/models/ProductModel.php';
-require_once 'app/models/AccountModel.php';
-require_once 'app/models/OrderModel.php';
-require_once 'app/models/OrderDetailModel.php';
-
-require_once 'app/libs/Auth.php';
-
 session_start();
+// Require file trong commons
+require_once './common/env.php';
+require_once './common/helper.php';
+require_once './common/connect-db.php';
+require_once './common/model.php';
 
-$url = $_GET['url'] ?? '';
-$url = rtrim($url, '/');
-$url = filter_var($url, FILTER_SANITIZE_URL);
-$url = explode('/', $url);
+// Require file trong controllers và models
+require_file(PATH_CONTROLLER_ADMIN);
+require_file(PATH_MODEL_ADMIN);
+require_file(PATH_CONTROLLER);
+require_file(PATH_MODEL);
 
-// Kiểm tra phần đầu tiên của URL để xác định controller
-$controllerName = isset($url[0]) && $url[0] != '' ? ucfirst($url[0]) . 'Controller' : 'DefaultController';
+// Điều hướng
+$act = $_GET['act'] ?? '/';
 
-// Kiểm tra phần thứ hai của URL để xác định action
-$action = isset($url[1]) && $url[1] != '' ? $url[1] : 'index';
+// Biến này cần khai báo được link cần đăng nhập mới vào được
+$arrRouteNeedAuth = [
+    'cart',
+    'addToCart',
+    'remoteCartItem',
+    'remoteCart',
+    'order',
+    'addOrder',
+    'updateQuantity',
+];
 
-// Kiểm tra xem controller và action có tồn tại không
-if (!file_exists('app/controllers/' . $controllerName . '.php')) {
-    // Xử lý không tìm thấy controller
-    die('Controller not found');
-}
+// Kiểm tra xem user đã đăng nhập chưa
+middleware_auth_check($act, $arrRouteNeedAuth);
 
-require_once 'app/controllers/' . $controllerName . '.php';
+match ($act) {
+    '/' => homeIndex(),
+    'cart' => cartIndex(),
+    'addToCart' => addToCart(),
+    'remoteCartItem' => remoteCartItem(),
+    'remoteCart' => remoteAllCart(),
+    'order' => orderIndex(),
+    'addOrder' => addOrder(),
+    'updateQuantity' => updateQuantity(),
 
-$controller = new $controllerName();
+    // Authen
+    'login' => authenShowFormLogin(),
+    'signup' => authenShowFormSignup(),
+    'logout' => authenLogout(),
 
-if (!method_exists($controller, $action)) {
-    // Xử lý không tìm thấy action
-    die('Action not found');
-}
+    //Products
+    'product' => productIndex($_GET['id']),
 
-// Gọi action với các tham số còn lại (nếu có)
-call_user_func_array([$controller, $action], array_slice($url, 2));
+    // Posts
+    'post' => postIndex($_GET['id']),
+    'posts-index' => postList(),
+
+    // Search
+    'search' => searchIndex(),
+
+    // Contact
+    'contact' => showFormContact(),
+
+    'account' => accountIndex(),
+
+    'myOrder' => myOrderIndex(),
+
+    'order-detail' => orderDetailIndex($_GET['id']),
+
+    'promotion' => promotionIndex(),
+
+    'order-update' => orderUpdateClient($_GET['id'], $_GET['id_tt']),
+
+    'thanks' => thanksIndex(),
+};
+
+require_once './common/disconnect-db.php';

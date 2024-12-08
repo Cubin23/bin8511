@@ -62,5 +62,13 @@ class OrderModel {
         return $stmt;
     }
 
-    
+    public function updateOrderStatus($id, $trangThai)
+{
+    $query = "UPDATE " . $this->table_name . " SET trangThai = :trangThai WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':trangThai', $trangThai);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+    return $stmt->execute();
+}
 }

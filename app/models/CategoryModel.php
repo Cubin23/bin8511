@@ -85,21 +85,23 @@ class CategoryModel {
         return false;
     }
     function deleteCategoryById($id) {
-        // Chuẩn bị câu truy vấn xoá
-        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
-        
-        // Chuẩn bị và thực thi câu truy vấn
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $id, PDO::PARAM_INT); // Liên kết tham số với giá trị
-        
-        // Thực thi câu truy vấn
-        $stmt->execute();
-        
-        // Kiểm tra và trả về kết quả
-        if ($stmt->rowCount() > 0) {
-            return true; // Nếu có sản phẩm bị xoá thành công
-        } else {
-            return false; // Nếu không có sản phẩm nào được xoá
+        try {
+            // Xóa các sản phẩm liên quan đến danh mục
+            $query = "DELETE FROM products WHERE category_id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            // Xóa danh mục
+            $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            throw new Exception("Error deleting category: " . $e->getMessage());
         }
     }
+    
 }

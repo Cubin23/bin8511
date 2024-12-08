@@ -34,6 +34,7 @@
                                         <th>Địa chỉ</th>
                                         <th>Ghi chú</th>
                                         <th>PT thanh toán</th>
+                                        <th>Trạng thái</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,7 +49,16 @@
                                             <td><?= $row['diachi'] ?></td>
                                             <td><?= $row['ghiChu'] ?></td>
                                             <td><?= $row['phuongThucThanhToan'] ?></td>
+                                            <td>
+                                                <select class="form-control status-select" data-order-id="<?= $row['id'] ?>" style="min-width: 200px; white-space: nowrap;">
+                                                    <option value="Chờ xác nhận" <?= $row['trangThai'] == 'Chờ xác nhận' ? 'selected' : '' ?>>Chờ xác nhận</option>
+                                                    <option value="Đã xác nhận" <?= $row['trangThai'] == 'Đã xác nhận' ? 'selected' : '' ?>>Đã xác nhận</option>
+                                                    <option value="Đang giao" <?= $row['trangThai'] == 'Đang giao' ? 'selected' : '' ?>>Đang giao</option>
+                                                    <option value="Hoàn thành" <?= $row['trangThai'] == 'Hoàn thành' ? 'selected' : '' ?>>Hoàn thành</option>
+                                                    <option value="Hủy" <?= $row['trangThai'] == 'Hủy' ? 'selected' : '' ?>>Hủy</option>
+                                                </select>
 
+                                            </td>
                                         </tr>
 
 
@@ -101,38 +111,66 @@
 
 
     <script>
-        $(document).ready(function () {
-            $('.orderrow').click(function () {
-                var orderId = $(this).find('td:first').text(); // Lấy giá trị của cột id
+        $(document).ready(function() {
+            $('.orderrow').click(function(event) {
+                // Kiểm tra nếu click không phải vào dropdown
+                if (!$(event.target).closest('.status-select').length) {
+                    var orderId = $(this).find('td:first').text(); // Lấy giá trị của cột id
+                    $.ajax({
+                        url: '/chieu2/order/getOrderDetailById/' + orderId,
+                        type: 'GET',
+                        success: function(response) {
+                            console.log(response);
+                            $('#orderdetaildialog').modal('show');
+                            $('#tborderdetail').empty();
+                            var tableHtml = '';
+                            response.forEach(function(orderDetail) {
+                                tableHtml += '<tr>'; // Bắt đầu một dòng mới
+                                tableHtml += '<td>' + orderDetail.name + '</td>';
+                                tableHtml += '<td>' + orderDetail.price + '</td>';
+                                tableHtml += '<td>' + orderDetail.soluong + '</td>';
+                                tableHtml += '<td>' + orderDetail.thanhtien + '</td>';
+                                tableHtml += '</tr>'; // Kết thúc dòng
+                            });
+                            $('#tborderdetail').append(tableHtml);
+                        },
+                        error: function() {
+                            alert('Đã có lỗi xảy ra trong quá trình xử lý yêu cầu.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.status-select').change(function() {
+                var orderId = $(this).data('order-id');
+                var trangThai = $(this).val();
+
                 $.ajax({
-                    url: '/chieu2/order/getOrderDetailById/' + orderId,
-                    type: 'GET',
-                    success: function (response) {
-                        console.log(response);
-                        $('#orderdetaildialog').modal('show');
-                        $('#tborderdetail').empty();
-                        var tableHtml = '';
-                        response.forEach(function (orderDetail) {
-                            tableHtml += '<tr>'; // Bắt đầu một dòng mới
-                            tableHtml += '<td>' + orderDetail.name + '</td>';
-                            tableHtml += '<td>' + orderDetail.price + '</td>';
-                            tableHtml += '<td>' + orderDetail.soluong + '</td>';
-                            tableHtml += '<td>' + orderDetail.thanhtien + '</td>';
-                            tableHtml += '</tr>'; // Kết thúc dòng
-                        });
-                        $('#tborderdetail').append(tableHtml);
+                    url: 'index.php?act=updateStatus', // Controller để xử lý cập nhật
+                    type: 'POST',
+                    data: {
+                        orderId: orderId,
+                        trangThai: trangThai
                     },
-
-
-
-                    error: function () {
-                        alert('Đã có lỗi xảy ra trong quá trình xử lý yêu cầu.');
+                    success: function(response) {
+                        var res = JSON.parse(response);
+                        if (res.success) {
+                            alert(res.message);
+                        } else {
+                            alert(res.message);
+                        }
+                    },
+                    error: function() {
+                        alert('Có lỗi xảy ra khi cập nhật trạng thái.');
                     }
                 });
             });
         });
-
     </script>
+
 
     <script src="/chieu2/public/admin/libs/jquery/dist/jquery.min.js"></script>
     <script src="/chieu2/public/admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -143,6 +181,3 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
-</body >
-
-</html >
